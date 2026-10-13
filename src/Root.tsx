@@ -11,6 +11,8 @@ import {
 import { RoleScene } from "./FieldMarketing/RoleScene";
 import { ShrugScene } from "./FieldMarketing/ShrugScene";
 import { FPS, HEIGHT, WIDTH } from "./FieldMarketing/theme";
+import { CollectionLocations } from "./HubBox/CollectionLocations";
+import * as HubBox from "./HubBox/theme";
 
 const scenes = [
   { id: "Ask", component: AskScene, durationInFrames: SCENES.ask },
@@ -44,6 +46,25 @@ export const RemotionRoot: React.FC = () => {
             height={HEIGHT}
           />
         ))}
+      </Folder>
+      <Folder name="HubBox">
+        <Composition
+          id="HubBoxCollectionLocations"
+          component={CollectionLocations}
+          durationInFrames={HubBox.DURATION_S * HubBox.FPS}
+          fps={HubBox.FPS}
+          width={HubBox.WIDTH}
+          height={HubBox.HEIGHT}
+        />
+        {/* Same animation at 8 subframes per frame; blended down to 60fps for motion blur. */}
+        <Composition
+          id="HubBoxCollectionLocations-480"
+          component={CollectionLocations}
+          durationInFrames={HubBox.DURATION_S * HubBox.FPS * 8}
+          fps={HubBox.FPS * 8}
+          width={HubBox.WIDTH}
+          height={HubBox.HEIGHT}
+        />
       </Folder>
     </>
   );
