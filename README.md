@@ -42,7 +42,7 @@ A 1920×1080, 30fps, 26s animation in the Wave client style (`docs/wave-style-gu
 
 > Real opportunities that trace back to the event, demos that got booked, deals that sales can point and say, that one started at the show. So when the quarter closes, finance asks what that $40,000 sponsorship actually returned, and sales asks where the leads are, and both of them are looking at the same person for an answer.
 
-Scenes (in `src/EventROI/`, joined with a blur dissolve; durations in `EventROIVideo.tsx`):
+Scenes (in `src/EventROI/`, joined with a blur dissolve; durations in `EventROIVideo.tsx`). The shared Wave pieces (theme, cards, avatars, background, transition) live in `src/Wave/`:
 
 1. `OpportunitiesScene` (0–4s): opportunity cards connect back to the event card
 2. `DemosScene` (4–7s): a demo slot is booked and "Demo booked" notifications stack up
@@ -54,4 +54,23 @@ Scenes (in `src/EventROI/`, joined with a blur dissolve; durations in `EventROIV
 
 ```console
 npx remotion render EventROI out/event-roi.mp4
+```
+
+## Field marketing tool stack (`ToolStack`)
+
+A 1920×1080, 30fps, 36s animation in the same Wave style, built from `src/Wave/`, for the script:
+
+> And to answer for all of that, the field marketing manager lives inside a stack of tools most people on the company never opens. There's the CRM where every lead has to land and get tied back to the right event and the right rep. There's a marketing automation that fires off for the follow-up. There's a spreadsheet or the project board where the whole event calendar lives, mapped out six months ahead. And there's whatever they're carrying on the show floor to capture the people they meet.
+
+Scenes (in `src/ToolStack/`; durations in `ToolStackVideo.tsx`):
+
+1. `LivesInsideScene` (0–5s): the Field Marketing Manager in the centre, with their four tools in orbit
+2. `StackScene` (4.5–10.5s): the tool windows stack up while colleagues show "Never opened"
+3. `CRMScene` (10–18s): leads land in the CRM and each is tagged with its event and its rep
+4. `AutomationScene` (17.5–22.5s): "Lead captured", then "Wait 1 day", then the follow-up email goes out
+5. `CalendarScene` (22–29.5s): the event board fills in, October to March
+6. `ShowFloorScene` (29–36s): a phone scans a badge, and the captured leads stack up
+
+```console
+npx remotion render ToolStack out/tool-stack.mp4
 ```

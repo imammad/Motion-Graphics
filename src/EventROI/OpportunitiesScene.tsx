@@ -1,8 +1,8 @@
 import { AbsoluteFill, useCurrentFrame } from "remotion";
-import { Avatar, Look, PEOPLE } from "./Avatar";
-import { CalendarIcon, PinIcon, TicketIcon } from "./Icons";
-import { BLUE, BLUE_PALE, GREY, HEADER_GRADIENT, INK, WHITE } from "./theme";
-import { Bar, Camera, Card, Connector, Defocus, Headline, Pill, Reveal } from "./ui";
+import { Avatar, Look, PEOPLE } from "../Wave/Avatar";
+import { CalendarIcon, PinIcon, TicketIcon } from "../Wave/Icons";
+import { BLUE, BLUE_PALE, GREY, HEADER_GRADIENT, INK, WHITE } from "../Wave/theme";
+import { Bar, Camera, Card, Connector, Defocus, Headline, Pill, Reveal } from "../Wave/ui";
 
 const OPPORTUNITIES: { company: string; amount: number; look: Look; left: number; top: number; anchor: [number, number]; target: [number, number] }[] = [
   { company: "Northwind", amount: 48, look: PEOPLE.a, left: 150, top: 300, anchor: [570, 375], target: [690, 560] },

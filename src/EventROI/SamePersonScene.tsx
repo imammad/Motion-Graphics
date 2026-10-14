@@ -1,8 +1,8 @@
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
-import { Avatar, PEOPLE } from "./Avatar";
-import { BriefcaseIcon } from "./Icons";
-import { BLUE, EASE_IN_OUT } from "./theme";
-import { Bubble, Camera, Connector, Pill, Reveal, Rings } from "./ui";
+import { Avatar, PEOPLE } from "../Wave/Avatar";
+import { BriefcaseIcon } from "../Wave/Icons";
+import { BLUE, EASE_IN_OUT } from "../Wave/theme";
+import { Bubble, Camera, Connector, Pill, Reveal, Rings } from "../Wave/ui";
 
 const HERO = 300;
 const CX = 960;

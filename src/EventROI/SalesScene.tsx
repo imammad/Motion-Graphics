@@ -1,8 +1,8 @@
 import { AbsoluteFill, useCurrentFrame } from "remotion";
-import { Avatar, PEOPLE } from "./Avatar";
-import { SearchIcon } from "./Icons";
-import { BLUE, BLUE_MIST, BLUE_PALE, GREY, INK } from "./theme";
-import { Bar, Bubble, Camera, Card, Defocus, Reveal } from "./ui";
+import { Avatar, PEOPLE } from "../Wave/Avatar";
+import { SearchIcon } from "../Wave/Icons";
+import { BLUE, BLUE_MIST, BLUE_PALE, GREY, INK } from "../Wave/theme";
+import { Bar, Bubble, Camera, Card, Defocus, Reveal } from "../Wave/ui";
 
 const ASK = 22;
 

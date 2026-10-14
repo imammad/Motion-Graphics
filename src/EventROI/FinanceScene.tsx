@@ -1,8 +1,8 @@
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
-import { Avatar, PEOPLE } from "./Avatar";
-import { TicketIcon } from "./Icons";
-import { BLUE, BLUE_PALE, EASE, GREY, HEADER_GRADIENT, INK, WHITE } from "./theme";
-import { Bar, Bubble, Camera, Card, Defocus, Reveal } from "./ui";
+import { Avatar, PEOPLE } from "../Wave/Avatar";
+import { TicketIcon } from "../Wave/Icons";
+import { BLUE, BLUE_PALE, EASE, GREY, HEADER_GRADIENT, INK, WHITE } from "../Wave/theme";
+import { Bar, Bubble, Camera, Card, Defocus, Reveal } from "../Wave/ui";
 
 const COUNT_START = 16;
 const COUNT_END = 46;

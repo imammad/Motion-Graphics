@@ -1,7 +1,7 @@
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
-import { CalendarIcon } from "./Icons";
-import { BLUE, BLUE_MIST, BUTTON_GRADIENT, EASE, EASE_IN_OUT, GREY, INK, WHITE } from "./theme";
-import { Camera, Card, Check, Headline, Pill, Reveal } from "./ui";
+import { CalendarIcon } from "../Wave/Icons";
+import { BLUE, BLUE_MIST, BUTTON_GRADIENT, EASE, EASE_IN_OUT, GREY, INK, WHITE } from "../Wave/theme";
+import { Camera, Card, Check, Headline, Pill, Reveal } from "../Wave/ui";
 
 const FILL_START = 14;
 const FILL_END = 46;

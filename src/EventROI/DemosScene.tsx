@@ -1,8 +1,8 @@
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
-import { Avatar, PEOPLE } from "./Avatar";
-import { CalendarIcon } from "./Icons";
-import { BLUE, BLUE_MIST, BLUE_PALE, EASE, EASE_IN_OUT, GREY, INK, WHITE } from "./theme";
-import { Bar, Camera, Card, Check, Cursor, Defocus, Headline, Reveal } from "./ui";
+import { Avatar, PEOPLE } from "../Wave/Avatar";
+import { CalendarIcon } from "../Wave/Icons";
+import { BLUE, BLUE_MIST, BLUE_PALE, EASE, EASE_IN_OUT, GREY, INK, WHITE } from "../Wave/theme";
+import { Bar, Camera, Card, Check, Cursor, Defocus, Headline, Reveal } from "../Wave/ui";
 
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri"];
 const TIMES = ["9:00", "10:00", "11:00", "2:00"];

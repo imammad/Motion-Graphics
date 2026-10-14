@@ -1,8 +1,8 @@
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
-import { Avatar, Look, PEOPLE } from "./Avatar";
-import { ChartIcon, TicketIcon } from "./Icons";
-import { BLUE, BLUE_MIST, EASE, EASE_IN_OUT, GREY, INK } from "./theme";
-import { Bubble, Camera, Card, Cursor, Defocus, Pill, Reveal } from "./ui";
+import { Avatar, Look, PEOPLE } from "../Wave/Avatar";
+import { ChartIcon, TicketIcon } from "../Wave/Icons";
+import { BLUE, BLUE_MIST, EASE, EASE_IN_OUT, GREY, INK } from "../Wave/theme";
+import { Bubble, Camera, Card, Cursor, Defocus, Pill, Reveal } from "../Wave/ui";
 
 const DEALS: { name: string; company: string; amount: string; stage: string; look: Look }[] = [
   { name: "Platform rollout", company: "Northwind", amount: "$48,000", stage: "Discovery", look: PEOPLE.a },

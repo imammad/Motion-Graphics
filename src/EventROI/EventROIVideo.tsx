@@ -1,10 +1,10 @@
 import { linearTiming, TransitionSeries } from "@remotion/transitions";
 import { AbsoluteFill } from "remotion";
-import { blurDissolve } from "./blurDissolve";
+import { blurDissolve } from "../Wave/blurDissolve";
 import { DealsScene } from "./DealsScene";
 import { DemosScene } from "./DemosScene";
 import { FinanceScene } from "./FinanceScene";
-import { GridBackground } from "./GridBackground";
+import { GridBackground } from "../Wave/GridBackground";
 import { OpportunitiesScene } from "./OpportunitiesScene";
 import { QuarterScene } from "./QuarterScene";
 import { SalesScene } from "./SalesScene";
