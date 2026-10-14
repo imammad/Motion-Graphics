@@ -15,6 +15,11 @@ import { DealsScene } from "./EventROI/DealsScene";
 import { DemosScene } from "./EventROI/DemosScene";
 import { EventROIVideo, SCENES as ROI_SCENES, TOTAL_DURATION as EVENT_ROI_DURATION } from "./EventROI/EventROIVideo";
 import { FinanceScene } from "./EventROI/FinanceScene";
+import { NoPipelineVideo, SCENES as NO_PIPELINE_SCENES, TOTAL_DURATION as NO_PIPELINE_DURATION } from "./NoPipeline/NoPipelineVideo";
+import { PileScene } from "./NoPipeline/PileScene";
+import { PipelineScene } from "./NoPipeline/PipelineScene";
+import { SpreadsheetScene } from "./NoPipeline/SpreadsheetScene";
+import { WhoGetsAskedScene } from "./NoPipeline/WhoGetsAskedScene";
 import { AutomationScene } from "./ToolStack/AutomationScene";
 import { CalendarScene } from "./ToolStack/CalendarScene";
 import { CRMScene } from "./ToolStack/CRMScene";
@@ -56,6 +61,13 @@ const toolStackScenes = [
   { id: "ShowFloor", component: ShowFloorScene, durationInFrames: STACK_SCENES.showFloor },
 ].map((s) => ({ ...s, component: withBackground(s.component) }));
 
+const noPipelineScenes = [
+  { id: "Pile", component: PileScene, durationInFrames: NO_PIPELINE_SCENES.pile },
+  { id: "Spreadsheet", component: SpreadsheetScene, durationInFrames: NO_PIPELINE_SCENES.spreadsheet },
+  { id: "Pipeline", component: PipelineScene, durationInFrames: NO_PIPELINE_SCENES.pipeline },
+  { id: "WhoGetsAsked", component: WhoGetsAskedScene, durationInFrames: NO_PIPELINE_SCENES.whoGetsAsked },
+].map((s) => ({ ...s, component: withBackground(s.component) }));
+
 export const RemotionRoot: React.FC = () => {
   return (
     <>
@@ -75,6 +87,27 @@ export const RemotionRoot: React.FC = () => {
         width={WIDTH}
         height={HEIGHT}
       />
+      <Composition
+        id="NoPipeline"
+        component={NoPipelineVideo}
+        durationInFrames={NO_PIPELINE_DURATION}
+        fps={FPS}
+        width={WIDTH}
+        height={HEIGHT}
+      />
+      <Folder name="NoPipeline-Scenes">
+        {noPipelineScenes.map((s) => (
+          <Composition
+            key={s.id}
+            id={s.id}
+            component={s.component}
+            durationInFrames={s.durationInFrames}
+            fps={FPS}
+            width={WIDTH}
+            height={HEIGHT}
+          />
+        ))}
+      </Folder>
       <Composition
         id="ToolStack"
         component={ToolStackVideo}

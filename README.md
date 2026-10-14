@@ -74,3 +74,20 @@ Scenes (in `src/ToolStack/`; durations in `ToolStackVideo.tsx`):
 ```console
 npx remotion render ToolStack out/tool-stack.mp4
 ```
+
+## Badges with no context (`NoPipeline`)
+
+A 1920×1080, 30fps, 15s animation in the Wave style, built from `src/Wave/`, for the script:
+
+> If those conversations come home as a pile of scanned badges with no context sitting in a spreadsheet nobody opens, then the pipeline never shows up. And the person who gets asked why is the field marketing manager.
+
+Scenes (in `src/NoPipeline/`; durations in `NoPipelineVideo.tsx`):
+
+1. `PileScene` (0–5s): chat bubbles fade out and scanned badges with empty notes drop into a pile, then "No context"
+2. `SpreadsheetScene` (4.5–7.5s): a badge spreadsheet with empty Notes and Follow-up columns, "Last opened 47 days ago", fading out of focus
+3. `PipelineScene` (7–10.5s): event-sourced pipeline at $0, with dashed bars where the pipeline should be
+4. `WhoGetsAskedScene` (10–15s): four people ask "why?" and every line leads to the Field Marketing Manager
+
+```console
+npx remotion render NoPipeline out/no-pipeline.mp4
+```
