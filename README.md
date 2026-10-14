@@ -26,3 +26,12 @@ npm i                                              # install
 npm run dev                                        # open Remotion Studio
 npx remotion render FieldMarketing out/field-marketing.mp4   # render MP4
 ```
+
+## Reference background
+
+`public/backgrounds/grid-background.webp` (1920×1080) is the background to use going forward. Use it with `<Img src={staticFile("backgrounds/grid-background.webp")} />`, or rebuild it in code from these measurements:
+
+- **Base:** a diagonal gradient from neutral off-white `#F2F2F2` (top-left) to pale periwinkle `#E7EEFE` (bottom-right), about `#ECEEF9` at the center
+- **Grid:** thin 1px lines in `#E3E7EF`, at low contrast against the base. The cells are rectangles about 82px wide by 56px tall, not squares
+- **Vignette:** the grid fades softly toward the edges, most at the top-left corner
+- **Feel:** flat and calm, no glows or dots. The content on top carries the blue (`#3D8AFC`)
