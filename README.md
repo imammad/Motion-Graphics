@@ -35,3 +35,23 @@ npx remotion render FieldMarketing out/field-marketing.mp4   # render MP4
 - **Grid:** thin 1px lines in `#E3E7EF`, at low contrast against the base. The cells are rectangles about 82px wide by 56px tall, not squares
 - **Vignette:** the grid fades softly toward the edges, most at the top-left corner
 - **Feel:** flat and calm, no glows or dots. The content on top carries the blue (`#3D8AFC`)
+
+## Field marketing ROI (`EventROI`)
+
+A 1920×1080, 30fps, 26s animation in the Wave client style (`docs/wave-style-guide.md`), on the reference grid background, for the script:
+
+> Real opportunities that trace back to the event, demos that got booked, deals that sales can point and say, that one started at the show. So when the quarter closes, finance asks what that $40,000 sponsorship actually returned, and sales asks where the leads are, and both of them are looking at the same person for an answer.
+
+Scenes (in `src/EventROI/`, joined with a blur dissolve; durations in `EventROIVideo.tsx`):
+
+1. `OpportunitiesScene` (0–4s): opportunity cards connect back to the event card
+2. `DemosScene` (4–7s): a demo slot is booked and "Demo booked" notifications stack up
+3. `DealsScene` (7–12s): one deal in the pipeline is picked out with "Source: SaaS Connect 2026"
+4. `QuarterScene` (12–14s): the Q3 progress bar fills and the quarter closes
+5. `FinanceScene` (14–18.5s): finance asks what the $40,000 sponsorship returned
+6. `SalesScene` (18.5–21s): sales asks where the leads are, next to an empty leads list
+7. `SamePersonScene` (21–26s): both of them look to the Field Marketing Manager
+
+```console
+npx remotion render EventROI out/event-roi.mp4
+```
