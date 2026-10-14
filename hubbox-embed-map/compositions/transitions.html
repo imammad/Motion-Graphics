@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template id="transitions-template">
+      <link rel="stylesheet" href="assets/hubbox-theme.css" />
+      <style>
+        #tr-root {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+        }
+        .tr-layer {
+          position: absolute;
+          inset: 0;
+        }
+        .tr-grid {
+          display: grid;
+          grid-template-columns: repeat(16, 1fr);
+          grid-template-rows: repeat(9, 1fr);
+        }
+        .tr-grid > div {
+          opacity: 0;
+        }
+        #tr-blinds {
+          display: flex;
+        }
+        #tr-blinds > div {
+          flex: 1;
+          height: 100%;
+          background: var(--hb-blue);
+        }
+        #tr-blinds > div:nth-child(3n + 2) {
+          background: var(--hb-blue-dark);
+        }
+        #tr-blinds > div:nth-child(4n + 3) {
+          background: var(--hb-blue-light);
+        }
+        #tr-iris,
+        #tr-iris-out {
+          background: var(--hb-gradient);
+        }
+      </style>
+
+      <div id="tr-root" data-composition-id="transitions" data-width="1920" data-height="1080">
+        <div id="tr-pixels-a" class="tr-layer tr-grid"></div>
+        <div id="tr-blinds" class="tr-layer"></div>
+        <div id="tr-pixels-b" class="tr-layer tr-grid"></div>
+        <div id="tr-iris" class="tr-layer"></div>
+        <div id="tr-iris-out" class="tr-layer"></div>
+      </div>
+
+      <script>
+        (function () {
+          const ID = "transitions";
+
+          // Scene cut times (seconds, root timeline). Keep in sync with index.html.
+          const CUTS = { embedToListen: 3.9, listenToConfirm: 7.6, confirmToSend: 11.85, sendToSave: 15.75 };
+          const COVER = 0.75; // seconds to fully cover before the cut
+          const UNCOVER = 0.85; // seconds to fully reveal after the cut
+
+          const COLS = 16;
+          const ROWS = 9;
+          const palette = [
+            HB.css("--hb-blue"),
+            HB.css("--hb-blue"),
+            HB.css("--hb-blue-dark"),
+            HB.css("--hb-blue-light"),
+            HB.css("--hb-blue-tint"),
+          ];
+
+          function fill(id, seed) {
+            const host = document.querySelector(id);
+            const rand = HB.seeded(seed);
+            const cells = [];
+            for (let i = 0; i < COLS * ROWS; i++) {
+              const c = document.createElement("div");
+              c.style.background = palette[Math.floor(rand() * palette.length)];
+              host.appendChild(c);
+              cells.push(c);
+            }
+            return cells;
+          }
+
+          function order(from, origin, seed) {
+            const rand = HB.seeded(seed);
+            const raw = [];
+            for (let r = 0; r < ROWS; r++) {
+              for (let c = 0; c < COLS; c++) {
+                const x = c / (COLS - 1);
+                const y = r / (ROWS - 1);
+                const d =
+                  from === "radial"
+                    ? Math.hypot((x - origin[0]) * (16 / 9), y - origin[1])
+                    : x * 0.62 + y * 0.38;
+                raw.push(d + rand() * 0.3);
+              }
+            }
+            const min = Math.min.apply(null, raw);
+            const max = Math.max.apply(null, raw);
+            return raw.map((v) => (v - min) / (max - min));
+          }
+
+          // Pixel sweep: cells pop in along the wave, the scene cuts underneath, cells clear in the same order.
+          function pixelCut(tl, cells, cut, ord) {
+            const cell = 0.3;
+            const spread = COVER - cell;
+            const stagger = (i) => ord[i] * spread;
+            tl.fromTo(
+              cells,
+              { opacity: 0, scale: 0.3 },
+              { opacity: 1, scale: 1, duration: cell, ease: HB.EASE.cellIn, stagger },
+              cut - COVER,
+            );
+            tl.fromTo(
+              cells,
+              { opacity: 1, scale: 1 },
+              {
+                opacity: 0,
+                scale: 0.5,
+                duration: cell + 0.05,
+                ease: HB.EASE.cellOut,
+                stagger: (i) => ord[i] * (UNCOVER - cell - 0.05),
+                immediateRender: false,
+              },
+              cut + 0.02,
+            );
+          }
+
+          const tl = gsap.timeline({ paused: true });
+
+          // 1 · Embed → Listen: diagonal pixel sweep
+          const a = fill("#tr-pixels-a", 101);
+          pixelCut(tl, a, CUTS.embedToListen, order("diag", null, 7));
+
+          // 2 · Listen → Confirm: blinds rise from the bottom, then lift away upward
+          const blinds = document.querySelector("#tr-blinds");
+          for (let i = 0; i < 10; i++) blinds.appendChild(document.createElement("div"));
+          const bars = blinds.children;
+          tl.fromTo(
+            bars,
+            { scaleY: 0, transformOrigin: "50% 100%" },
+            { scaleY: 1, duration: 0.5, ease: HB.EASE.move, stagger: 0.025 },
+            CUTS.listenToConfirm - COVER,
+          );
+          tl.fromTo(
+            bars,
+            { scaleY: 1, transformOrigin: "50% 0%" },
+            { scaleY: 0, duration: 0.55, ease: HB.EASE.move, stagger: 0.03, immediateRender: false },
+            CUTS.listenToConfirm + 0.02,
+          );
+
+          // 3 · Confirm → Send: pixels ripple out from the Confirm button
+          const b = fill("#tr-pixels-b", 202);
+          pixelCut(tl, b, CUTS.confirmToSend, order("radial", [0.74, 0.7], 9));
+
+          // 4 · Send → Save: iris opens from the backend node, then wipes away to the right
+          const IRIS = "at 86% 55%";
+          tl.fromTo(
+            "#tr-iris",
+            { clipPath: "circle(0% " + IRIS + ")" },
+            { clipPath: "circle(120% " + IRIS + ")", duration: COVER, ease: "power2.in" },
+            CUTS.sendToSave - COVER,
+          );
+          tl.fromTo("#tr-iris", { opacity: 1 }, { opacity: 0, duration: 0.01 }, CUTS.sendToSave);
+          tl.fromTo(
+            "#tr-iris-out",
+            { clipPath: "inset(0% 100% 0% 0%)" },
+            { clipPath: "inset(0% 0% 0% 0%)", duration: 0.01 },
+            CUTS.sendToSave,
+          );
+          tl.fromTo(
+            "#tr-iris-out",
+            { clipPath: "inset(0% 0% 0% 0%)" },
+            { clipPath: "inset(0% 0% 0% 100%)", duration: UNCOVER, ease: HB.EASE.move, immediateRender: false },
+            CUTS.sendToSave + 0.02,
+          );
+
+          window.__timelines[ID] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

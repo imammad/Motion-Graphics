@@ -26,3 +26,13 @@ npm i                                              # install
 npm run dev                                        # open Remotion Studio
 npx remotion render FieldMarketing out/field-marketing.mp4   # render MP4
 ```
+
+## HubBox · Embed the map (`hubbox-embed-map/`)
+
+A separate HyperFrames project in the same style, paced to the "You embed the HubBox map…" voice-over. See `hubbox-embed-map/README.md` for scenes, timing and where to edit.
+
+```console
+cd hubbox-embed-map
+npm run dev      # HyperFrames Studio
+npm run render   # render MP4
+```
