@@ -1,4 +1,6 @@
 import { Composition, Folder } from "remotion";
+import { CollectionVideo } from "./HubBoxCollection/CollectionVideo";
+import * as HB from "./HubBoxCollection/theme";
 import { AnswersScene } from "./FieldMarketing/AnswersScene";
 import { AskScene } from "./FieldMarketing/AskScene";
 import { BoothScene } from "./FieldMarketing/BoothScene";
@@ -24,6 +26,14 @@ const scenes = [
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      <Composition
+        id="HubBoxCollection"
+        component={CollectionVideo}
+        durationInFrames={HB.DURATION}
+        fps={HB.FPS}
+        width={HB.WIDTH}
+        height={HB.HEIGHT}
+      />
       <Composition
         id="FieldMarketing"
         component={FieldMarketingVideo}
