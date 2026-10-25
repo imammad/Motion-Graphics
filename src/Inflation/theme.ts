@@ -58,6 +58,27 @@ export const THEMES = {
     itemBorder: "rgba(221,221,221,0.30)",
     itemGlow: "0 0 30px rgba(67,224,151,0.30)",
     alert: "#ff8f63",
+    alertText: "#ff9d76",
+    alertGlow: "rgba(255,143,99,0.50)",
+    barHot: "linear-gradient(180deg, #5ee8a6 0%, #2aa86c 100%)",
+    barHotGlow: "0 0 36px rgba(67,224,151,0.45)",
+    barDim: "linear-gradient(180deg, rgba(221,221,221,0.34) 0%, rgba(221,221,221,0.16) 100%)",
+    barA: "#dddddd",
+    aInk: "#072818",
+    barB: "linear-gradient(90deg, #2aa86c 0%, #5ee8a6 100%)",
+    bGlow: "0 0 30px rgba(67,224,151,0.40)",
+    hatch:
+      "repeating-linear-gradient(135deg, rgba(255,143,99,0.28) 0px, rgba(255,143,99,0.28) 6px, rgba(0,0,0,0) 6px, rgba(0,0,0,0) 14px)",
+    badgeOn: "rgba(1,87,42,0.92)",
+    badgeOnInk: "#eafff3",
+    badgeOnGlow: "0 0 26px rgba(67,224,151,0.45)",
+    badgeOffBorder: "rgba(221,221,221,0.35)",
+    ringOff: "rgba(221,221,221,0.22)",
+    dotOff: "rgba(221,221,221,0.10)",
+    ringTrack: "rgba(221,221,221,0.08)",
+    panel: "rgba(221,221,221,0.05)",
+    panelBorder: "rgba(221,221,221,0.14)",
+    panelShadow: "0 24px 50px rgba(0,0,0,0.35)",
   },
   light: {
     base: "#dddddd",
@@ -96,12 +117,36 @@ export const THEMES = {
     itemBorder: "rgba(1,87,42,0.35)",
     itemGlow: "0 10px 26px rgba(1,87,42,0.18)",
     alert: "#b8502a",
+    alertText: "#a3431f",
+    alertGlow: "rgba(184,80,42,0.30)",
+    barHot: "#01572a",
+    barHotGlow: "0 14px 34px rgba(1,87,42,0.35)",
+    barDim: "#a3ada7",
+    barA: "#3f5247",
+    aInk: "#eeeeee",
+    barB: "#01572a",
+    bGlow: "0 10px 26px rgba(1,87,42,0.30)",
+    hatch:
+      "repeating-linear-gradient(135deg, rgba(184,80,42,0.22) 0px, rgba(184,80,42,0.22) 6px, rgba(0,0,0,0) 6px, rgba(0,0,0,0) 14px)",
+    badgeOn: "#01572a",
+    badgeOnInk: "#dddddd",
+    badgeOnGlow: "0 10px 24px rgba(1,87,42,0.30)",
+    badgeOffBorder: "rgba(1,87,42,0.40)",
+    ringOff: "rgba(1,87,42,0.25)",
+    dotOff: "rgba(1,87,42,0.13)",
+    ringTrack: "rgba(1,87,42,0.12)",
+    panel: "rgba(255,255,255,0.42)",
+    panelBorder: "rgba(1,87,42,0.18)",
+    panelShadow: "0 18px 40px rgba(1,40,20,0.10)",
   },
 };
 
 export type Theme = (typeof THEMES)["dark"];
 
 export type SceneProps = { theme: ThemeName };
+
+// A line of copy that appears on a voice cue (seconds into the clip).
+export type Timed = { text: string; at: number };
 
 // Motion rules from the style board: cubic in-out for moves, quart-out for
 // counters, a light back-ease only for chips and tags popping in.

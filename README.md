@@ -38,11 +38,16 @@ Four 1920×1080, 30fps graphics for the client's inflation episode (C0080), in t
 | `T3-Staircase-*` | "…if it was 10% before and it's now 5%… it's risen by 15.5%. It's not gone up by 10% and back down by 5%." | 17.5s |
 | `T4-HubSpokes-*` | "…that headline figure of 27% is a national average… gas prices, car insurance, mortgage interest, they all rose faster" | 21s |
 
-Cue times live in a `CUE` object at the top of each file in `src/Inflation/`; shared colours, fonts (Poppins, bundled) and easing are in `src/Inflation/theme.ts`.
+### Storyboard frames (`Inflation-Storyboard` folder)
+
+The 19 storyboard frames (`F01-OnlyTwice-*` … `F19-Recap-*`, dark and light) are built from six reusable scenes: `Columns`, `BigStat`, `Shift`, `CompareBars`, `Checklist` and `RateLine`. Every frame's copy, figures and voice cues are plain props in `src/Inflation/frames.ts`, so they can also be edited in Remotion Studio's props panel. Cue times are seconds into that frame's voice clip, placed on the word the narrator says; figures are the narrator's, as said in the script.
+
+Cue times for `T1`–`T4` live in a `CUE` object at the top of each file in `src/Inflation/`; shared colours, fonts (Poppins, bundled) and easing are in `src/Inflation/theme.ts`.
 
 The voice clips are not committed. Cut them from the episode audio first:
 
 ```console
 scripts/cut-inflation-audio.sh path/to/C0080.mp3
 npx remotion render T1-PriceLine-Dark out/inflation/T1-PriceLine-Dark.mp4
+npx remotion render F05-Mortgage-Light out/inflation/storyboard/F05-Mortgage-Light.mp4
 ```

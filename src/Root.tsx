@@ -15,6 +15,7 @@ import { HUB_SECONDS, HubSpokes } from "./Inflation/HubSpokes";
 import { PRICE_LINE_SECONDS, PriceLine } from "./Inflation/PriceLine";
 import { STAIRCASE_SECONDS, Staircase } from "./Inflation/Staircase";
 import { VALUE_SHIFT_SECONDS, ValueShift } from "./Inflation/ValueShift";
+import { STORYBOARD } from "./Inflation/frames";
 import { SceneProps } from "./Inflation/theme";
 
 const inflation = [
@@ -73,6 +74,22 @@ export const RemotionRoot: React.FC = () => {
               width={WIDTH}
               height={HEIGHT}
               defaultProps={th.props}
+            />
+          )),
+        )}
+      </Folder>
+      <Folder name="Inflation-Storyboard">
+        {STORYBOARD.flatMap((s) =>
+          themes.map((th) => (
+            <Composition
+              key={`${s.id}-${th.suffix}`}
+              id={`${s.id}-${th.suffix}`}
+              component={s.component as React.FC<Record<string, unknown>>}
+              durationInFrames={Math.round(s.seconds * FPS)}
+              fps={FPS}
+              width={WIDTH}
+              height={HEIGHT}
+              defaultProps={{ ...s.props, ...th.props }}
             />
           )),
         )}
