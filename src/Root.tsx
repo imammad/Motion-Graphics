@@ -11,6 +11,22 @@ import {
 import { RoleScene } from "./FieldMarketing/RoleScene";
 import { ShrugScene } from "./FieldMarketing/ShrugScene";
 import { FPS, HEIGHT, WIDTH } from "./FieldMarketing/theme";
+import { HUB_SECONDS, HubSpokes } from "./Inflation/HubSpokes";
+import { PRICE_LINE_SECONDS, PriceLine } from "./Inflation/PriceLine";
+import { STAIRCASE_SECONDS, Staircase } from "./Inflation/Staircase";
+import { VALUE_SHIFT_SECONDS, ValueShift } from "./Inflation/ValueShift";
+import { SceneProps } from "./Inflation/theme";
+
+const inflation = [
+  { id: "T1-PriceLine", component: PriceLine, seconds: PRICE_LINE_SECONDS },
+  { id: "T2-ValueShift", component: ValueShift, seconds: VALUE_SHIFT_SECONDS },
+  { id: "T3-Staircase", component: Staircase, seconds: STAIRCASE_SECONDS },
+  { id: "T4-HubSpokes", component: HubSpokes, seconds: HUB_SECONDS },
+];
+const themes: { suffix: string; props: SceneProps }[] = [
+  { suffix: "Dark", props: { theme: "dark" } },
+  { suffix: "Light", props: { theme: "light" } },
+];
 
 const scenes = [
   { id: "Ask", component: AskScene, durationInFrames: SCENES.ask },
@@ -44,6 +60,22 @@ export const RemotionRoot: React.FC = () => {
             height={HEIGHT}
           />
         ))}
+      </Folder>
+      <Folder name="Inflation">
+        {inflation.flatMap((s) =>
+          themes.map((th) => (
+            <Composition
+              key={`${s.id}-${th.suffix}`}
+              id={`${s.id}-${th.suffix}`}
+              component={s.component}
+              durationInFrames={Math.round(s.seconds * FPS)}
+              fps={FPS}
+              width={WIDTH}
+              height={HEIGHT}
+              defaultProps={th.props}
+            />
+          )),
+        )}
       </Folder>
     </>
   );
