@@ -16,7 +16,7 @@ import { PRICE_LINE_SECONDS, PriceLine } from "./Inflation/PriceLine";
 import { STAIRCASE_SECONDS, Staircase } from "./Inflation/Staircase";
 import { VALUE_SHIFT_SECONDS, ValueShift } from "./Inflation/ValueShift";
 import { STORYBOARD } from "./Inflation/frames";
-import { SceneProps } from "./Inflation/theme";
+import { FPS as INFLATION_FPS, SceneProps } from "./Inflation/theme";
 
 const inflation = [
   { id: "T1-PriceLine", component: PriceLine, seconds: PRICE_LINE_SECONDS },
@@ -69,8 +69,8 @@ export const RemotionRoot: React.FC = () => {
               key={`${s.id}-${th.suffix}`}
               id={`${s.id}-${th.suffix}`}
               component={s.component}
-              durationInFrames={Math.round(s.seconds * FPS)}
-              fps={FPS}
+              durationInFrames={Math.round(s.seconds * INFLATION_FPS)}
+              fps={INFLATION_FPS}
               width={WIDTH}
               height={HEIGHT}
               defaultProps={th.props}
@@ -85,8 +85,8 @@ export const RemotionRoot: React.FC = () => {
               key={`${s.id}-${th.suffix}`}
               id={`${s.id}-${th.suffix}`}
               component={s.component as React.FC<Record<string, unknown>>}
-              durationInFrames={Math.round(s.seconds * FPS)}
-              fps={FPS}
+              durationInFrames={Math.round(s.seconds * INFLATION_FPS)}
+              fps={INFLATION_FPS}
               width={WIDTH}
               height={HEIGHT}
               defaultProps={{ ...s.props, ...th.props }}

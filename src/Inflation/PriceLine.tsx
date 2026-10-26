@@ -1,6 +1,7 @@
 import { Audio, interpolate, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { Frame } from "./Frame";
 import { POP, SceneProps, THEMES, fmt, ramp } from "./theme";
+import { Sfx } from "./Sfx";
 
 // "…over the five years from 2021 until 2026, the overall price index rose by
 // around 27%. So something that cost £100 in 2021, it now costs about £127 today."
@@ -107,6 +108,11 @@ export const PriceLine: React.FC<SceneProps> = ({ theme }) => {
       source="Source: ONS CPI, rebased 2021 = £100 (intermediate years illustrative)"
     >
       <Audio src={staticFile("audio/T1.wav")} />
+      <Sfx name="pop" at={CUE.start} volume={0.45} />
+      <Sfx name="draw" at={CUE.draw[0]} volume={0.45} />
+      <Sfx name="pop-high" at={CUE.delta} volume={0.4} />
+      <Sfx name="swoosh" at={CUE.guide} volume={0.35} />
+      <Sfx name="impact" at={CUE.end} volume={0.55} />
       <div
         style={{
           position: "absolute",

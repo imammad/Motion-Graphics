@@ -1,5 +1,6 @@
 import { AbsoluteFill } from "remotion";
 import { Backdrop, Theme, fontFamily, ramp } from "./theme";
+import { Sfx } from "./Sfx";
 
 const backdropImage = (t: Theme, backdrop: Backdrop) => {
   if (backdrop === "grid")
@@ -34,6 +35,7 @@ export const Frame: React.FC<{
   return (
     <AbsoluteFill style={{ fontFamily, color: t.ink, background: t.base }}>
       <AbsoluteFill style={{ background: t.bg }} />
+      <Sfx name="whoosh-soft" at={0.05} volume={0.4} />
       <AbsoluteFill
         style={{
           backgroundImage: `radial-gradient(${t.tex} 1px, rgba(0,0,0,0) 1.6px)`,

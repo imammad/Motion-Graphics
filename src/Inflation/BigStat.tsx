@@ -1,6 +1,7 @@
 import { Audio, interpolate, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { Frame } from "./Frame";
 import { Backdrop, OUT, ThemeName, THEMES, Timed, fmt, ramp } from "./theme";
+import { Sfx } from "./Sfx";
 
 // Big stat (T7): one large number with caption and sublines, optionally beside
 // a progress ring or a 10×10 dot grid. All cue times are seconds into `audio`.
@@ -67,6 +68,26 @@ export const BigStat: React.FC<BigStatProps> = (p) => {
   return (
     <Frame t={t} time={time} heading={p.heading} kicker={p.kicker} source={p.source} backdrop={p.backdrop} center={p.align === "center"}>
       <Audio src={staticFile(p.audio)} />
+      {p.stages.map((s, i) =>
+        s.value !== (i ? p.stages[i - 1].value : 0) ? (
+          <Sfx key={`stage${i}`} name="impact" at={s.at} volume={0.6} />
+        ) : (
+          <Sfx key={`stage${i}`} name="swoosh" at={s.at + 0.2} volume={0.35} />
+        ),
+      )}
+      {p.subs.map((s, i) => (
+        <Sfx key={`sub${i}`} name="tick" at={s.at} volume={0.5} />
+      ))}
+      {single ? null : (
+        <>
+          <Sfx name="whoosh-soft" at={p.cue.vis} volume={0.35} />
+          <Sfx name="whoosh" at={p.cue.fill} volume={0.35} />
+          <Sfx name="tick" at={p.cue.inner} volume={0.4} />
+          <Sfx name="pop" at={p.cue.label} volume={0.4} />
+          <Sfx name="blip-low" at={p.cue.rest} volume={0.4} />
+        </>
+      )}
+      <Sfx name="impact" at={p.cue.pulse} volume={0.45} />
       <div
         style={{
           position: "absolute",

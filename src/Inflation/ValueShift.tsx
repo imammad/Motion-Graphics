@@ -1,6 +1,7 @@
 import { Audio, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { Frame } from "./Frame";
 import { OUT, POP, SceneProps, THEMES, fmt, ramp } from "./theme";
+import { Sfx } from "./Sfx";
 
 // "…let's say your monthly cost £2,000 five years ago, the same basket of goods
 // today would cost you around £2,500. So you've got to find an extra £500 a month
@@ -45,6 +46,11 @@ export const ValueShift: React.FC<SceneProps> = ({ theme }) => {
       source="Illustrative: £2,000 × CPI +27.6% (2021–2026)"
     >
       <Audio src={staticFile("audio/T2.wav")} />
+      <Sfx name="pop" at={CUE.from} volume={0.45} />
+      <Sfx name="swoosh" at={CUE.arrow} volume={0.4} />
+      <Sfx name="impact" at={CUE.to - 0.1} volume={0.55} />
+      <Sfx name="pop-high" at={CUE.to + 0.4} volume={0.4} />
+      <Sfx name="whoosh" at={CUE.extra} volume={0.4} />
       <div
         style={{
           position: "absolute",

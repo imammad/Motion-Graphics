@@ -1,6 +1,7 @@
 import { Audio, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { Frame } from "./Frame";
 import { Backdrop, OUT, POP, ThemeName, THEMES, ramp } from "./theme";
+import { BLIPS, Sfx } from "./Sfx";
 
 // Column chart (T5): bars grow on their own cues; negatives hang below zero in
 // the alert colour; callout chips point at the bars that matter.
@@ -90,6 +91,18 @@ export const Columns: React.FC<ColumnsProps> = (p) => {
       center={p.align === "center"}
     >
       <Audio src={staticFile(p.audio)} />
+      {/* Each bar's blip is pitched by its height, so a run of bars plays its own shape. */}
+      {bars.map((b) => (
+        <Sfx
+          key={`sfx${b.i}`}
+          name={b.pos ? BLIPS[Math.round((4 * b.v) / (mx || 1))] : "blip-low"}
+          at={b.at}
+          volume={small ? 0.3 : 0.45}
+        />
+      ))}
+      {p.callouts.map((c) => (
+        <Sfx key={`call${c.index}`} name="pop" at={c.at} volume={0.5} />
+      ))}
       <svg width={1920} height={1080} style={{ position: "absolute", inset: 0 }}>
         <g opacity={grid}>
           {ns.ticks.map((v) => (

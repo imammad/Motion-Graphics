@@ -1,6 +1,7 @@
 import { Audio, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { Frame } from "./Frame";
 import { Backdrop, ThemeName, THEMES, ramp } from "./theme";
+import { Sfx } from "./Sfx";
 
 // Checklist (T8). List: each step slides in on `at`, its badge fills and the
 // tick draws on `tickAt`. Grid: cards land on `at`, the detail lands on `tickAt`.
@@ -44,6 +45,12 @@ export const Checklist: React.FC<ChecklistProps> = (p) => {
       center={p.align === "center"}
     >
       <Audio src={staticFile(p.audio)} />
+      {p.items.map((it, i) => (
+        <span key={`sfx${i}`}>
+          <Sfx name="whoosh" at={it.at} volume={0.35} />
+          <Sfx name={grid ? "pop" : "ding"} at={it.tickAt} volume={grid ? 0.45 : 0.4} />
+        </span>
+      ))}
       {p.items.map((it, i) => {
         const inP = ramp(time, it.at, it.at + 0.6);
         const tk = ramp(time, it.tickAt, it.tickAt + 0.5);

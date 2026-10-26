@@ -1,6 +1,7 @@
 import { Audio, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { Frame } from "./Frame";
 import { Backdrop, OUT, POP, ThemeName, THEMES, Timed, fmt, ramp } from "./theme";
+import { Sfx } from "./Sfx";
 
 // Value shift (T2) for any from → to pair, in three layouts: side by side,
 // cards, or stacked. A decrease turns the lost slice of the bar alert orange.
@@ -108,6 +109,14 @@ export const Shift: React.FC<ShiftProps> = (p) => {
       center={p.align === "center"}
     >
       <Audio src={staticFile(p.audio)} />
+      <Sfx name="pop" at={cue.from} volume={0.45} />
+      <Sfx name="swoosh" at={cue.arrow} volume={0.4} />
+      <Sfx name="impact" at={cue.to - 0.1} volume={0.55} />
+      <Sfx name="pop-high" at={cue.to + p.countSeconds * 0.5} volume={0.4} />
+      <Sfx name={up ? "whoosh" : "strike"} at={cue.extra} volume={0.4} />
+      {p.notes.map((n, i) => (
+        <Sfx key={`note${i}`} name="tick" at={n.at} volume={0.5} />
+      ))}
       {p.layout !== "stack" ? (
         <div
           style={{

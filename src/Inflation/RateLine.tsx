@@ -1,6 +1,7 @@
 import { Audio, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { Frame } from "./Frame";
 import { Backdrop, POP, ThemeName, THEMES, ramp } from "./theme";
+import { Sfx } from "./Sfx";
 
 // Line chart (T1, straight segments) for a rate series: the line draws to its
 // low point, the low is tagged, a near-zero band and the long fall are called
@@ -82,6 +83,14 @@ export const RateLine: React.FC<RateLineProps> = (p) => {
   return (
     <Frame t={t} time={time} heading={p.heading} kicker={p.kicker} source={p.source} backdrop={p.backdrop}>
       <Audio src={staticFile(p.audio)} />
+      <Sfx name="draw" at={cue.draw[0]} volume={0.45} />
+      <Sfx name="pop" at={cue.low} volume={0.5} />
+      <Sfx name="ding" at={cue.low + 0.05} volume={0.3} />
+      <Sfx name="whoosh-soft" at={cue.band} volume={0.35} />
+      <Sfx name="swoosh" at={cue.fall} volume={0.4} />
+      <Sfx name="pop-high" at={cue.fall + 0.8} volume={0.35} />
+      <Sfx name="blip3" at={cue.today} volume={0.4} />
+      <Sfx name="pop-high" at={cue.today + 0.8} volume={0.35} />
       <div
         style={{
           position: "absolute",

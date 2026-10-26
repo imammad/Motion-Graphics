@@ -11,7 +11,8 @@ for (const weight of [400, 500, 600, 700, 800]) {
   });
 }
 
-export const FPS = 30;
+// 60fps for smoother motion; every cue is in seconds, so timing is unaffected.
+export const FPS = 60;
 export const WIDTH = 1920;
 export const HEIGHT = 1080;
 

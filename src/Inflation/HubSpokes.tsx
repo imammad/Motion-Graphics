@@ -1,6 +1,7 @@
 import { Audio, interpolate, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { Frame } from "./Frame";
 import { OUT, POP, SceneProps, THEMES, ramp } from "./theme";
+import { Sfx } from "./Sfx";
 
 // "…that headline figure of 27% is a national average… Your personal experience
 // will depend heavily on what you consume. So for example gas prices, car
@@ -82,6 +83,14 @@ export const HubSpokes: React.FC<SceneProps> = ({ theme }) => {
       source="Figures from client brief · confirm sources (ONS CPI components)"
     >
       <Audio src={staticFile("audio/T4.wav")} />
+      <Sfx name="impact" at={CUE.center} volume={0.55} />
+      <Sfx name="whoosh" at={CUE.average} volume={0.35} />
+      <Sfx name="tick" at={CUE.caption} volume={0.45} />
+      {ITEMS.map((it, i) => (
+        <Sfx key={it.label} name={(["blip2", "blip3", "blip5"] as const)[i]} at={CUE.items[it.label]} volume={0.45} />
+      ))}
+      <Sfx name="whoosh-soft" at={CUE.faster} volume={0.35} />
+      <Sfx name="impact" at={CUE.echo} volume={0.4} />
       <svg width={1920} height={1080} style={{ position: "absolute", inset: 0 }}>
         <circle
           cx={CX}

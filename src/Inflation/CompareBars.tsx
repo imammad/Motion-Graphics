@@ -1,6 +1,7 @@
 import { Audio, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { Frame } from "./Frame";
 import { Backdrop, OUT, POP, ThemeName, THEMES, Timed, fmt, ramp } from "./theme";
+import { Sfx } from "./Sfx";
 
 // Compare bars (T6): paired bars per row, A (e.g. frozen) over B (e.g. what it
 // should be), with the hatched gap between them called out.
@@ -54,6 +55,14 @@ export const CompareBars: React.FC<CompareBarsProps> = (p) => {
   return (
     <Frame t={t} time={time} heading={p.heading} kicker={legend} source={p.source} backdrop={p.backdrop}>
       <Audio src={staticFile(p.audio)} />
+      {p.rows.map((r, i) => (
+        <span key={`sfx${i}`}>
+          <Sfx name="swoosh" at={r.aAt} volume={0.35} />
+          <Sfx name="swoosh" at={r.bAt} volume={0.35} />
+          <Sfx name="blip-low" at={r.gapAt} volume={0.4} />
+        </span>
+      ))}
+      <Sfx name="impact" at={p.stamp.at} volume={0.55} />
       {p.rows.map((r, i) => {
         const mx = p.scale === "shared" ? gmax : Math.max(Math.abs(r.a), Math.abs(r.b)) || 1;
         const aW = (W * Math.abs(r.a)) / mx;

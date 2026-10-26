@@ -1,6 +1,7 @@
 import { Audio, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { Frame } from "./Frame";
 import { POP, SceneProps, THEMES, fmt, ramp } from "./theme";
+import { Sfx } from "./Sfx";
 
 // "What they really mean is that prices are just increasing at a slower rate…
 // So if it was 10% before and it's now 5%, actually over the course of the period
@@ -70,6 +71,14 @@ export const Staircase: React.FC<SceneProps> = ({ theme }) => {
       source="Illustrative example: 10% inflation, then 5%"
     >
       <Audio src={staticFile("audio/T3.wav")} />
+      <Sfx name="blip1" at={CUE.step1 + 0.45} volume={0.45} />
+      <Sfx name="blip3" at={CUE.step2 + 0.45} volume={0.45} />
+      <Sfx name="blip5" at={CUE.step3 + 0.45} volume={0.45} />
+      <Sfx name="ding" at={CUE.total} volume={0.35} />
+      <Sfx name="blip-low" at={CUE.myth} volume={0.4} />
+      <Sfx name="strike" at={CUE.myth + 1.0} volume={0.45} />
+      <Sfx name="impact" at={CUE.punch} volume={0.55} />
+      <Sfx name="whoosh-soft" at={CUE.settle} volume={0.3} />
       {VALUES.map((v, i) => (
         <div key={`b${i}`}>
           <div
