@@ -18,11 +18,14 @@ const CUE = {
 const BASE = 820;
 const RULER_TOP = 430;
 const W = 380;
-const BARS = [
-  { x: 280, label: "Then", color: C.ink },
-  { x: 720, label: "Now", color: C.mint },
-  { x: 1160, label: "Change", color: C.alert },
-];
+const RED = "#ff4b4b";
+// Then and Now are centred on the two vertical thirds. Now lands at its full
+// height, then a red "Negative" block eats down from its top: the share lost.
+const THEN_X = G.x1 - W / 2;
+const NOW_X = G.x2 - W / 2;
+const THEN_H = 330;
+const NOW_H = 280;
+const LOSS_H = 110;
 
 export const Negative: React.FC = () => {
   const frame = useCurrentFrame();
@@ -30,11 +33,10 @@ export const Negative: React.FC = () => {
   const time = frame / fps;
 
   const ruler = k(time, CUE.ruler, CUE.ruler + 1.4, SMOOTH);
-  const thenH = 330 * k(time, CUE.then - 0.1, CUE.then + 1.0);
-  // "Now" lands, then settles lower: the squeeze.
-  const nowH = mix(220, 170, k(time, CUE.now + 0.9, CUE.now + 2.0, SMOOTH)) * k(time, CUE.now - 0.1, CUE.now + 0.9);
-  const changeH = 130 * k(time, CUE.fiveYears, CUE.fiveYears + 1.2, SMOOTH);
-  const heights = [thenH, nowH, -changeH];
+  const thenH = THEN_H * k(time, CUE.then - 0.1, CUE.then + 1.0);
+  const nowH = NOW_H * k(time, CUE.now - 0.1, CUE.now + 0.9);
+  const lossH = LOSS_H * k(time, CUE.fiveYears, CUE.fiveYears + 1.4, SMOOTH);
+  const nowTop = BASE - NOW_H;
   const ticks = Math.floor((BASE - RULER_TOP) / 26);
 
   return (
@@ -50,8 +52,8 @@ export const Negative: React.FC = () => {
       <div style={{ position: "absolute", left: G.left - 4, top: G.y1, translate: "0 -100%" }}>
         <Reveal time={time} at={CUE.negative - 0.05} dur={1.0}>
           <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
-            <div style={{ ...DISPLAY, fontSize: 150, color: C.alert }}>Negative</div>
-            <Arrow size={120} angle={90} p={k(time, CUE.negative + 0.35, CUE.negative + 1.1)} color={C.alert} stroke={13} />
+            <div style={{ ...DISPLAY, fontSize: 150, color: RED }}>Negative</div>
+            <Arrow size={120} angle={90} p={k(time, CUE.negative + 0.35, CUE.negative + 1.1)} color={RED} stroke={13} />
           </div>
         </Reveal>
       </div>
@@ -88,47 +90,26 @@ export const Negative: React.FC = () => {
           );
         })}
         <line x1={G.left} x2={mix(G.left, G.right, ruler)} y1={BASE} y2={BASE} stroke={C.ink} strokeWidth={3} />
-        {BARS.map((b, i) => {
-          const h = heights[i];
-          return (
-            <rect
-              key={b.label}
-              x={b.x}
-              y={h >= 0 ? BASE - h : BASE + 1.5}
-              width={W}
-              height={Math.abs(h)}
-              fill={b.color}
-            />
-          );
-        })}
+        <rect x={THEN_X} y={BASE - thenH} width={W} height={thenH} fill={C.ink} />
+        <rect x={NOW_X} y={BASE - nowH} width={W} height={nowH} fill={C.mint} />
+        <rect x={NOW_X} y={nowTop} width={W} height={lossH} fill={RED} />
+        {/* A hairline seam where the loss meets what's left. */}
+        <rect x={NOW_X} y={nowTop + lossH - 1.5} width={W} height={3} fill={C.bg} opacity={lossH > 2 ? 1 : 0} />
       </svg>
 
-      {/* Bar labels sit inside each bar: name top-left, spec bottom-left. */}
-      {BARS.map((b, i) => {
-        const h = heights[i];
-        const full = [330, 170, 130][i];
-        const show = k(time, [CUE.then, CUE.now, CUE.fiveYears][i] + 0.5, [CUE.then, CUE.now, CUE.fiveYears][i] + 1.0);
-        const top = h >= 0 ? BASE - h : BASE;
-        return (
-          <div
-            key={b.label}
-            style={{
-              position: "absolute",
-              left: b.x + 24,
-              top: top + 18,
-              height: Math.max(0, Math.abs(h) - 36),
-              width: W - 48,
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              overflow: "hidden",
-              opacity: Math.abs(h) > full * 0.6 ? show : 0,
-            }}
-          >
-            <div style={{ ...DISPLAY, fontSize: 58, color: C.bg }}>{b.label}</div>
-          </div>
-        );
-      })}
+      {/* Bar names sit inside each block, top-left. */}
+      {[
+        { x: THEN_X, top: BASE - thenH, label: "Then", show: k(time, CUE.then + 0.5, CUE.then + 1.0) * (thenH > 200 ? 1 : 0) },
+        { x: NOW_X, top: nowTop + lossH, label: "Now", show: k(time, CUE.now + 0.5, CUE.now + 1.0) * (nowH > 170 ? 1 : 0) },
+        { x: NOW_X, top: nowTop, label: "Negative", show: lossH > 80 ? k(time, CUE.fiveYears + 0.7, CUE.fiveYears + 1.2) : 0 },
+      ].map((l) => (
+        <div
+          key={l.label}
+          style={{ ...DISPLAY, fontSize: 58, color: C.bg, position: "absolute", left: l.x + 24, top: l.top + 20, opacity: l.show }}
+        >
+          {l.label}
+        </div>
+      ))}
     </Stage>
   );
 };
