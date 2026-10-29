@@ -19,9 +19,9 @@ const BASE = 820;
 const RULER_TOP = 430;
 const W = 380;
 const BARS = [
-  { x: 280, label: "Then", spec: "2019 – 2021", color: C.ink },
-  { x: 720, label: "Now", spec: "2026", color: C.mint },
-  { x: 1160, label: "Change", spec: "Past five years", color: C.alert },
+  { x: 280, label: "Then", color: C.ink },
+  { x: 720, label: "Now", color: C.mint },
+  { x: 1160, label: "Change", color: C.alert },
 ];
 
 export const Negative: React.FC = () => {
@@ -38,7 +38,7 @@ export const Negative: React.FC = () => {
   const ticks = Math.floor((BASE - RULER_TOP) / 26);
 
   return (
-    <Stage>
+    <Stage time={time}>
       <Audio src={staticFile("audio/I3.wav")} />
 
       {/* Upper third: the subject, then the verdict. */}
@@ -72,6 +72,7 @@ export const Negative: React.FC = () => {
         {/* Ruler down the left edge and a baseline, as in the report reference. */}
         <line x1={G.left} x2={G.left} y1={BASE} y2={mix(BASE, RULER_TOP, ruler)} stroke={C.rule} strokeWidth={2} />
         {Array.from({ length: ticks + 1 }, (_, i) => {
+          if (i % 5 !== 0) return null;
           const y = BASE - i * 26;
           return (
             <line
@@ -125,7 +126,6 @@ export const Negative: React.FC = () => {
             }}
           >
             <div style={{ ...DISPLAY, fontSize: 58, color: C.bg }}>{b.label}</div>
-            <div style={{ ...LABEL, fontSize: 15, letterSpacing: "0.2em", color: C.bg, opacity: 0.75 }}>{b.spec}</div>
           </div>
         );
       })}

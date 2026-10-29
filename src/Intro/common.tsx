@@ -62,13 +62,41 @@ export const LABEL: React.CSSProperties = {
   whiteSpace: "nowrap",
 };
 
-// Flat forest ground with one very soft light pool for depth; no texture or glow.
-export const Stage: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <AbsoluteFill style={{ background: C.bg, overflow: "hidden" }}>
-    <AbsoluteFill style={{ background: "radial-gradient(90% 80% at 30% 30%, rgba(221,221,221,0.035), rgba(0,0,0,0) 70%)" }} />
-    {children}
-  </AbsoluteFill>
-);
+// Deep forest radial gradient with two slow-drifting soft glows and a vignette,
+// as in the chart backgrounds, minus the dot texture to keep it clean.
+export const Stage: React.FC<{ time: number; children: React.ReactNode }> = ({ time, children }) => {
+  const a = Math.sin(time * 0.3);
+  const b = Math.cos(time * 0.24);
+  return (
+    <AbsoluteFill style={{ background: "#041a0f", overflow: "hidden" }}>
+      <AbsoluteFill style={{ background: "radial-gradient(120% 95% at 50% 42%, #0c3621 0%, #072818 46%, #03130a 100%)" }} />
+      <div
+        style={{
+          position: "absolute",
+          left: 200 + 80 * a,
+          top: 60 + 40 * b,
+          width: 1200,
+          height: 950,
+          borderRadius: "50%",
+          background: "radial-gradient(closest-side, rgba(67,224,151,0.11), rgba(67,224,151,0))",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          right: 120 - 70 * b,
+          bottom: -300 + 50 * a,
+          width: 1100,
+          height: 950,
+          borderRadius: "50%",
+          background: "radial-gradient(closest-side, rgba(1,87,42,0.40), rgba(1,87,42,0))",
+        }}
+      />
+      <AbsoluteFill style={{ background: "radial-gradient(120% 120% at 50% 45%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.45) 100%)" }} />
+      {children}
+    </AbsoluteFill>
+  );
+};
 
 // Masked reveal: content rises from behind its own baseline and, if `out` is
 // given, leaves upward the same way.

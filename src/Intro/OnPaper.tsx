@@ -67,26 +67,24 @@ export const OnPaper: React.FC = () => {
   const payEnd = py(PAY[PAY.length - 1][1]);
   const bankEnd = py(BANK[BANK.length - 1][1]);
 
-  const chart = (mirror: boolean) => (
-    <g transform={mirror ? `translate(0 ${2 * BASE}) scale(1 -1)` : undefined}>
-      <path d={area(PAY)} fill={C.mint} opacity={mix(0.2, 0.08, dim)} clipPath="url(#i2-pay)" />
+  const chart = (
+    <g>
+      <path d={area(PAY)} fill={C.mint} opacity={mix(0.16, 0.07, dim)} clipPath="url(#i2-pay)" />
       <path d={area(BANK)} fill={C.ink} opacity={0.94} clipPath="url(#i2-bank)" />
-      {!mirror && (
-        <path
-          d={line(PAY)}
-          fill="none"
-          stroke={C.mint}
-          strokeWidth={4}
-          strokeLinejoin="round"
-          opacity={mix(1, 0.4, dim)}
-          clipPath="url(#i2-pay)"
-        />
-      )}
+      <path
+        d={line(PAY)}
+        fill="none"
+        stroke={C.mint}
+        strokeWidth={4}
+        strokeLinejoin="round"
+        opacity={mix(1, 0.4, dim)}
+        clipPath="url(#i2-pay)"
+      />
     </g>
   );
 
   return (
-    <Stage>
+    <Stage time={time}>
       <Audio src={staticFile("audio/I2.wav")} />
 
       {/* Upper third: the hero swaps from "On paper ↗" to "In the bank →". */}
@@ -138,18 +136,9 @@ export const OnPaper: React.FC = () => {
           <clipPath id="i2-bank">
             <rect x={0} y={0} width={px(bank)} height={2000} />
           </clipPath>
-          <linearGradient id="i2-fade" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stopColor="#fff" stopOpacity={0.12} />
-            <stop offset="0.35" stopColor="#fff" stopOpacity={0} />
-          </linearGradient>
-          <mask id="i2-reflect">
-            <rect x={0} y={BASE} width={1920} height={1080 - BASE} fill="url(#i2-fade)" />
-          </mask>
         </defs>
 
-        {/* Soft reflection under the baseline, as in the reference charts. */}
-        <g mask="url(#i2-reflect)">{chart(true)}</g>
-        {chart(false)}
+        {chart}
 
         <line x1={G.left} x2={mix(G.left, G.right, axis)} y1={BASE} y2={BASE} stroke={C.rule} strokeWidth={2} />
 

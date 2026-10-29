@@ -28,10 +28,9 @@ export const ThenNow: React.FC = () => {
   const ruler = k(time, CUE.ruler, CUE.ruler + 1.6, SMOOTH);
   const run = k(time, CUE.travel[0], CUE.travel[1], SMOOTH);
   const headX = mix(G.left, G.right, run);
-  const minor = Math.floor((G.right - G.left) / 40);
 
   return (
-    <Stage>
+    <Stage time={time}>
       <Audio src={staticFile("audio/I1.wav")} />
 
       {/* Upper third: the question. */}
@@ -81,11 +80,6 @@ export const ThenNow: React.FC = () => {
 
       <svg width={1920} height={1080} style={{ position: "absolute", inset: 0 }}>
         <line x1={G.left} x2={mix(G.left, G.right, ruler)} y1={RULER_Y} y2={RULER_Y} stroke={C.rule} strokeWidth={2} />
-        {Array.from({ length: minor + 1 }, (_, i) => {
-          const x = G.left + i * 40;
-          const on = ruler * (G.right - G.left) >= i * 40 ? 1 : 0;
-          return <line key={i} x1={x} x2={x} y1={RULER_Y} y2={RULER_Y + 10} stroke={C.faint} strokeWidth={2} opacity={on} />;
-        })}
         {YEARS.map((y, i) => (
           <line
             key={y}
