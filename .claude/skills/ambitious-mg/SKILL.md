@@ -1,10 +1,12 @@
 ---
-name: editorial-infographic-motion
+name: ambitious-mg
 description: >-
-  Create premium, clean "editorial infographic" motion graphics synced to a voice-over: dark forest-green gradient, tall condensed display type with wide-tracked labels, flat infographic shapes (bars, rulers, stepped area lines, thin arrows), rule-of-thirds layout, smooth masked and letter-by-letter reveals, built in Remotion and rendered 1080p60 with no SFX. Use this skill whenever someone wants explainer / YouTube / talking-head graphics, animated stats, charts or "visual points" for a script or audio, kinetic typography for finance or data stories, or asks to turn transcript sections into motion graphics, even if they don't name the style, and whenever they ask for "the same style as the intro", "premium and clean", "infographic style", or "not AI-looking / not choppy" animation.
+  AmbitiousMG: create premium, clean "editorial infographic" motion graphics synced to a voice-over: dark forest-green gradient, tall condensed display type with wide-tracked labels, flat infographic shapes (bars, rulers, stepped area lines, thin arrows), rule-of-thirds layout, smooth masked and letter-by-letter reveals, built in Remotion and rendered 1080p60 with no SFX. Use this skill whenever someone wants explainer / YouTube / talking-head graphics, animated stats, charts or "visual points" for a script or audio, kinetic typography for finance or data stories, or asks to turn transcript sections into motion graphics, even if they don't name the style, and whenever they mention AmbitiousMG or "AmbitiousMG style", or ask for "the same style as the intro", "premium and clean", "infographic style", or "not AI-looking / not choppy" animation.
 ---
 
-# Editorial infographic motion
+# AmbitiousMG
+
+The AmbitiousMG editorial infographic motion style.
 
 A style and a workflow for voice-synced explainer graphics that feel like an editorial annual report brought to life: one big idea per visual, set in condensed type, carried by a single flat infographic shape, timed to the narrator's words.
 
