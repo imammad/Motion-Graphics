@@ -16,6 +16,9 @@ import { PRICE_LINE_SECONDS, PriceLine } from "./Inflation/PriceLine";
 import { STAIRCASE_SECONDS, Staircase } from "./Inflation/Staircase";
 import { VALUE_SHIFT_SECONDS, ValueShift } from "./Inflation/ValueShift";
 import { STORYBOARD } from "./Inflation/frames";
+import { NEGATIVE_SECONDS, Negative } from "./Intro/Negative";
+import { ON_PAPER_SECONDS, OnPaper } from "./Intro/OnPaper";
+import { THEN_NOW_SECONDS, ThenNow } from "./Intro/ThenNow";
 import { FPS as INFLATION_FPS, SceneProps } from "./Inflation/theme";
 
 const inflation = [
@@ -23,6 +26,11 @@ const inflation = [
   { id: "T2-ValueShift", component: ValueShift, seconds: VALUE_SHIFT_SECONDS },
   { id: "T3-Staircase", component: Staircase, seconds: STAIRCASE_SECONDS },
   { id: "T4-HubSpokes", component: HubSpokes, seconds: HUB_SECONDS },
+];
+const intro = [
+  { id: "Intro1-ThenNow", component: ThenNow, seconds: THEN_NOW_SECONDS },
+  { id: "Intro2-OnPaper", component: OnPaper, seconds: ON_PAPER_SECONDS },
+  { id: "Intro3-Negative", component: Negative, seconds: NEGATIVE_SECONDS },
 ];
 const themes: { suffix: string; props: SceneProps }[] = [
   { suffix: "Dark", props: { theme: "dark" } },
@@ -93,6 +101,19 @@ export const RemotionRoot: React.FC = () => {
             />
           )),
         )}
+      </Folder>
+      <Folder name="Inflation-Intro">
+        {intro.map((s) => (
+          <Composition
+            key={s.id}
+            id={s.id}
+            component={s.component}
+            durationInFrames={Math.round(s.seconds * INFLATION_FPS)}
+            fps={INFLATION_FPS}
+            width={WIDTH}
+            height={HEIGHT}
+          />
+        ))}
       </Folder>
     </>
   );
