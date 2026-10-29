@@ -1,11 +1,29 @@
-import { AbsoluteFill, Easing, interpolate } from "remotion";
-import { THEMES, fontFamily } from "../Inflation/theme";
+import { loadFont } from "@remotion/fonts";
+import { AbsoluteFill, Easing, interpolate, staticFile } from "remotion";
 
-// Intro visuals: same Forest palette as the charts, but type-led and minimal.
-export const T = THEMES.dark;
+// Editorial infographic system for the intro: flat colour, condensed display
+// type, wide-tracked labels, hairline rules. Forest palette from the charts.
+for (const weight of [600, 700, 800]) {
+  loadFont({ family: "Barlow Condensed", url: staticFile(`fonts/BarlowCondensed-${weight}.woff2`), weight: String(weight) });
+}
+for (const weight of [400, 500, 600]) {
+  loadFont({ family: "Inter", url: staticFile(`fonts/Inter-${weight}.woff2`), weight: String(weight) });
+}
 
-// Expo-out for entrances (fast start, long soft settle) and a symmetric
-// in-out for camera moves and hand-offs between states.
+export const C = {
+  bg: "#072818",
+  ink: "#dddddd",
+  muted: "rgba(221,221,221,0.56)",
+  faint: "rgba(221,221,221,0.22)",
+  rule: "rgba(221,221,221,0.42)",
+  mint: "#43e097",
+  brand: "#01572a",
+  alert: "#ff8f63",
+};
+
+// Layout grid: 160px margins, rule-of-thirds lines at x 640/1280 and y 360/720.
+export const G = { left: 160, right: 1760, x1: 640, x2: 1280, y1: 360, y2: 720 };
+
 export const EXPO = Easing.bezier(0.16, 1, 0.3, 1);
 export const SMOOTH = Easing.bezier(0.65, 0, 0.35, 1);
 
@@ -14,80 +32,84 @@ export const k = (time: number, a: number, b: number, easing = EXPO) =>
 
 export const mix = (a: number, b: number, t: number) => a + (b - a) * t;
 
-export const HERO: React.CSSProperties = {
+// Eases through a list of keyframes, one curve per segment, so a value can
+// move in steps that each land on a voice cue.
+export const steps = (time: number, times: number[], values: number[], easing = SMOOTH) => {
+  if (time <= times[0]) return values[0];
+  for (let i = 1; i < times.length; i++) {
+    if (time <= times[i]) return mix(values[i - 1], values[i], easing((time - times[i - 1]) / (times[i] - times[i - 1])));
+  }
+  return values[values.length - 1];
+};
+
+export const DISPLAY: React.CSSProperties = {
+  fontFamily: "Barlow Condensed",
   fontWeight: 800,
-  letterSpacing: "-0.035em",
-  lineHeight: 1,
-  color: T.head,
+  textTransform: "uppercase",
+  lineHeight: 0.84,
+  letterSpacing: "-0.005em",
+  color: C.ink,
   whiteSpace: "nowrap",
 };
 
 export const LABEL: React.CSSProperties = {
-  fontSize: 24,
-  fontWeight: 600,
-  letterSpacing: "0.14em",
+  fontFamily: "Inter",
+  fontWeight: 500,
+  fontSize: 20,
+  letterSpacing: "0.3em",
   textTransform: "uppercase",
-  color: T.muted,
+  color: C.muted,
   whiteSpace: "nowrap",
 };
 
-// Dark stage: deep green gradient, two slow-drifting glows, fine grain, vignette.
-export const Stage: React.FC<{ time: number; children: React.ReactNode }> = ({ time, children }) => {
-  const a = Math.sin(time * 0.35);
-  const b = Math.cos(time * 0.28);
-  return (
-    <AbsoluteFill style={{ fontFamily, background: "#041a0f", overflow: "hidden" }}>
-      <AbsoluteFill
-        style={{ background: "radial-gradient(120% 95% at 50% 42%, #0c3621 0%, #072818 46%, #03130a 100%)" }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          left: 280 + 90 * a,
-          top: 120 + 50 * b,
-          width: 1100,
-          height: 900,
-          borderRadius: "50%",
-          background: "radial-gradient(closest-side, rgba(67,224,151,0.13), rgba(67,224,151,0))",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          right: 160 - 80 * b,
-          bottom: -260 + 60 * a,
-          width: 1000,
-          height: 900,
-          borderRadius: "50%",
-          background: "radial-gradient(closest-side, rgba(1,87,42,0.35), rgba(1,87,42,0))",
-        }}
-      />
-      <AbsoluteFill
-        style={{ backgroundImage: `radial-gradient(${T.tex} 1px, rgba(0,0,0,0) 1.6px)`, backgroundSize: "5px 5px" }}
-      />
-      <AbsoluteFill style={{ background: T.vig }} />
-      {children}
-    </AbsoluteFill>
-  );
-};
+// Flat forest ground with one very soft light pool for depth; no texture or glow.
+export const Stage: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <AbsoluteFill style={{ background: C.bg, overflow: "hidden" }}>
+    <AbsoluteFill style={{ background: "radial-gradient(90% 80% at 30% 30%, rgba(221,221,221,0.035), rgba(0,0,0,0) 70%)" }} />
+    {children}
+  </AbsoluteFill>
+);
 
-// Masked line reveal: the text rises from behind its own baseline and, if
-// `out` is given, leaves upward the same way.
+// Masked reveal: content rises from behind its own baseline and, if `out` is
+// given, leaves upward the same way.
 export const Reveal: React.FC<{
   time: number;
   at: number;
   out?: number;
   dur?: number;
-  // Font size of the line, so the mask's padding (in em) clears its descenders.
-  size?: number;
   style?: React.CSSProperties;
   children: React.ReactNode;
-}> = ({ time, at, out, dur = 0.9, size, style, children }) => {
+}> = ({ time, at, out, dur = 0.9, style, children }) => {
   const i = k(time, at, at + dur);
   const o = out === undefined ? 0 : k(time, out, out + 0.6, SMOOTH);
   return (
-    <div style={{ display: "inline-block", overflow: "hidden", fontSize: size, padding: "0.06em 0.04em 0.24em", ...style }}>
-      <div style={{ translate: `0 ${(1 - i) * 105 - o * 105}%`, opacity: Math.min(1, i * 1.6) * (1 - o) }}>{children}</div>
+    <div style={{ display: "inline-block", overflow: "hidden", padding: "6px 4px", ...style }}>
+      <div style={{ translate: `0 ${(1 - i) * 110 - o * 110}%` }}>{children}</div>
     </div>
+  );
+};
+
+// Thin editorial arrow (like the "8% ↑" mark), pointing at `angle` degrees
+// (0 = right, -90 = up, 90 = down), drawn on with `p`.
+export const Arrow: React.FC<{ size: number; angle: number; p: number; color: string; stroke?: number }> = ({
+  size,
+  angle,
+  p,
+  color,
+  stroke = 12,
+}) => {
+  const len = size * 0.9;
+  const head = size * 0.28;
+  return (
+    <svg width={size} height={size} viewBox={`${-size / 2} ${-size / 2} ${size} ${size}`} style={{ overflow: "visible" }}>
+      <g transform={`rotate(${angle})`} stroke={color} strokeWidth={stroke} fill="none" strokeLinecap="square">
+        <line x1={-len / 2} y1={0} x2={-len / 2 + len * p} y2={0} />
+        <path
+          d={`M${len / 2 - head} ${-head} L${len / 2} 0 L${len / 2 - head} ${head}`}
+          strokeLinejoin="miter"
+          opacity={p > 0.85 ? 1 : 0}
+        />
+      </g>
+    </svg>
   );
 };
