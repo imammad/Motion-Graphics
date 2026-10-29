@@ -1,5 +1,5 @@
 import { Audio, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
-import { Arrow, C, DISPLAY, G, LABEL, Reveal, SMOOTH, Stage, k, mix } from "./common";
+import { Arrow, C, DISPLAY, G, LABEL, Letters, Reveal, SMOOTH, SOFT, Stage, k, mix } from "./common";
 
 // "…I remember feeling like I had more disposable income back then than I do now,
 // which seems really weird. And the reason for this is that in the past five years,
@@ -45,17 +45,17 @@ export const Negative: React.FC = () => {
 
       {/* Upper third: the subject, then the verdict. */}
       <div style={{ position: "absolute", left: G.left - 4, top: G.y1, translate: "0 -100%" }}>
-        <Reveal time={time} at={CUE.title} out={CUE.negative - 0.5} dur={1.0}>
+        <Reveal time={time} at={CUE.title} out={CUE.negative - 0.75} dur={1.0}>
           <div style={{ ...DISPLAY, fontSize: 150 }}>Disposable income</div>
         </Reveal>
       </div>
       <div style={{ position: "absolute", left: G.left - 4, top: G.y1, translate: "0 -100%" }}>
-        <Reveal time={time} at={CUE.negative - 0.05} dur={1.0}>
-          <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
-            <div style={{ ...DISPLAY, fontSize: 150, color: RED }}>Negative</div>
-            <Arrow size={120} angle={90} p={k(time, CUE.negative + 0.35, CUE.negative + 1.1)} color={RED} stroke={13} />
+        <div style={{ display: "flex", alignItems: "center", gap: 24, padding: "6px 4px" }}>
+          <Letters text="Negative" time={time} at={CUE.negative - 0.1} style={{ ...DISPLAY, fontSize: 150, color: RED }} />
+          <div style={{ opacity: k(time, CUE.negative + 0.45, CUE.negative + 0.8) }}>
+            <Arrow size={120} angle={90} p={k(time, CUE.negative + 0.45, CUE.negative + 1.35, SOFT)} color={RED} stroke={13} />
           </div>
-        </Reveal>
+        </div>
       </div>
       <div
         style={{

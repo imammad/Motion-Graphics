@@ -141,3 +141,37 @@ export const Arrow: React.FC<{ size: number; angle: number; p: number; color: st
     </svg>
   );
 };
+
+// Soft ease-out for type: quick to start, a long gentle settle.
+export const SOFT = Easing.bezier(0.22, 1, 0.36, 1);
+
+// Letter-by-letter reveal: each glyph lifts a short way, fades in and
+// sharpens from a light blur, staggered so the word flows on rather than pops.
+export const Letters: React.FC<{
+  text: string;
+  time: number;
+  at: number;
+  stagger?: number;
+  dur?: number;
+  style?: React.CSSProperties;
+}> = ({ text, time, at, stagger = 0.045, dur = 1.1, style }) => (
+  <div style={{ ...style, display: "flex" }}>
+    {text.split("").map((ch, i) => {
+      const p = k(time, at + i * stagger, at + i * stagger + dur, SOFT);
+      return (
+        <span
+          key={i}
+          style={{
+            display: "inline-block",
+            whiteSpace: "pre",
+            opacity: p,
+            translate: `0 ${(1 - p) * 0.32}em`,
+            filter: `blur(${(1 - p) * 10}px)`,
+          }}
+        >
+          {ch}
+        </span>
+      );
+    })}
+  </div>
+);
