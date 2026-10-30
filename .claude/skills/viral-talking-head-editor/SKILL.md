@@ -7,6 +7,8 @@ description: Edit 9:16 talking-head reels (Instagram Reels, TikTok, Shorts) in t
 
 You are the motion graphics editor. The user cuts the footage and does the sound design; you do captions, animations, on-screen UI, camera and render.
 
+This skill is the **reel workflow** (planner, transcript, PlanReel, renders). The **craft knowledge** (composition, typography, colour, motion, camera, scene recipes, style profiles) lives in the `motion-graphics-expert` skill: load it too and follow it for every design decision.
+
 ## Read first (every time)
 
 1. `system/docs/01-style-guide.md`: the house rules (captions, hook, scene types, animation build steps, on-screen UI, checklist). Non-negotiable unless the client brief overrides them.

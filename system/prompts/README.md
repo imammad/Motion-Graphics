@@ -8,5 +8,6 @@
 | 03 | build | Every edit, after you've filled in the planning page. |
 | 04 | revise | After each preview. |
 | 05 | render-qa | When the preview is approved. |
+| 06 | single-scene | One animation in any style, any chat (uses the motion-graphics-expert skill). |
 
 Replace everything in [BRACKETS]. Cutting and sound design are done by you, outside this system.

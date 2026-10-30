@@ -14,7 +14,9 @@ A repeatable system for editing 9:16 talking-head reels with Claude + Remotion, 
 | `docs/` | Markdown sources of the PDFs (edit these, then rebuild) |
 | `styles/` | One filled-in Client Style Brief per client |
 | `references/` | Reference reel frames, guide frames, 219 inspiration images |
-| `../.claude/skills/viral-talking-head-editor/` | The skill: Claude Code loads it automatically in this repo |
+| `../.claude/skills/motion-graphics-expert/` | The knowledge skill: all motion graphics craft, any style, any single scene. Portable |
+| `skills/motion-graphics-expert.zip` | The same skill packaged for claude.ai upload |
+| `../.claude/skills/viral-talking-head-editor/` | The reel workflow skill (planner → build → render) for this repo |
 | `../planner/index.html` | The planning page (open in a browser) |
 | `../tools/transcribe.py` | Word-level transcript + planner seed from your cut video |
 | `../src/ReelKit/` | Reusable Remotion components + style profiles |
@@ -29,6 +31,14 @@ A repeatable system for editing 9:16 talking-head reels with Claude + Remotion, 
 5. Prompt 04 for changes, prompt 05 for the final render. Add your sound design.
 
 New client? Run prompt 01 first, once.
+
+## The motion-graphics-expert skill (use it anywhere)
+
+It holds the knowledge, not one look. Styles are plug-ins: add your client briefs as `.claude/skills/motion-graphics-expert/styles/<client>.md` (copy `_template.md`). Then in any chat: "Use my motion graphics skill: a full-screen animation for 'engagement grew 3.4x' in the dark-saas style" builds just that scene in that style.
+
+- **This repo (Claude Code):** loads automatically.
+- **Every project on your computer:** copy the folder to `~/.claude/skills/motion-graphics-expert/`.
+- **claude.ai:** upload `system/skills/motion-graphics-expert.zip` in Settings, in the Skills section (skills must be enabled for your account). Re-zip after adding briefs: `python3 system/package_skill.py`.
 
 ## Rebuild the PDFs after editing the docs
 
