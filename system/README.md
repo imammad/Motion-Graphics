@@ -14,8 +14,8 @@ A repeatable system for editing 9:16 talking-head reels with Claude + Remotion, 
 | `docs/` | Markdown sources of the PDFs (edit these, then rebuild) |
 | `styles/` | One filled-in Client Style Brief per client |
 | `references/` | Reference reel frames, guide frames, 219 inspiration images |
-| `../.claude/skills/motion-graphics-expert/` | The knowledge skill: all motion graphics craft, any style, any single scene. Portable |
-| `skills/motion-graphics-expert.zip` | The same skill packaged for claude.ai upload |
+| `../.claude/skills/mgskill/` | The knowledge skill: all motion graphics craft, any style, any single scene. Portable |
+| `skills/mgskill.zip` | The same skill packaged for claude.ai upload |
 | `../.claude/skills/viral-talking-head-editor/` | The reel workflow skill (planner → build → render) for this repo |
 | `../planner/index.html` | The planning page (open in a browser) |
 | `../tools/transcribe.py` | Word-level transcript + planner seed from your cut video |
@@ -32,13 +32,13 @@ A repeatable system for editing 9:16 talking-head reels with Claude + Remotion, 
 
 New client? Run prompt 01 first, once.
 
-## The motion-graphics-expert skill (use it anywhere)
+## The mgskill skill (use it anywhere)
 
-It holds the knowledge, not one look. Styles are plug-ins: add your client briefs as `.claude/skills/motion-graphics-expert/styles/<client>.md` (copy `_template.md`). Then in any chat: "Use my motion graphics skill: a full-screen animation for 'engagement grew 3.4x' in the dark-saas style" builds just that scene in that style.
+It holds the knowledge, not one look. Styles are plug-ins: add your client briefs as `.claude/skills/mgskill/styles/<client>.md` (copy `_template.md`). Then in any chat: "Use mgskill: a full-screen animation for 'engagement grew 3.4x' in the dark-saas style" builds just that scene in that style.
 
 - **This repo (Claude Code):** loads automatically.
-- **Every project on your computer:** copy the folder to `~/.claude/skills/motion-graphics-expert/`.
-- **claude.ai:** upload `system/skills/motion-graphics-expert.zip` in Settings, in the Skills section (skills must be enabled for your account). Re-zip after adding briefs: `python3 system/package_skill.py`.
+- **Every project on your computer:** copy the folder to `~/.claude/skills/mgskill/`.
+- **claude.ai:** upload `system/skills/mgskill.zip` in Settings, in the Skills section (skills must be enabled for your account). Re-zip after adding briefs: `python3 system/package_skill.py`.
 
 ## Rebuild the PDFs after editing the docs
 

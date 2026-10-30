@@ -1,4 +1,4 @@
-"""Zip .claude/skills/motion-graphics-expert into system/skills/ for claude.ai upload.
+"""Zip .claude/skills/mgskill into system/skills/ for claude.ai upload.
 
     python3 system/package_skill.py
 """
@@ -6,7 +6,7 @@ import os
 import zipfile
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-NAME = "motion-graphics-expert"
+NAME = "mgskill"
 SRC = os.path.join(ROOT, ".claude", "skills", NAME)
 OUT = os.path.join(ROOT, "system", "skills", f"{NAME}.zip")
 
