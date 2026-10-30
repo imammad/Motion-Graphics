@@ -1,6 +1,15 @@
 # Motion Graphics
 
-Remotion project for SaaS-style explainer animations.
+Remotion project for motion graphics: SaaS-style explainer animations and 9:16 talking-head reels.
+
+## Talking-head reel system
+
+Start at [`system/README.md`](system/README.md): style guide, workflow, client brief and prompt PDFs, the Claude skill, the planning page (`planner/index.html`) and the reusable `src/ReelKit` components. The `ReelDemo` composition shows every scene type.
+
+```console
+npx remotion render ReelDemo out/reel-demo.mp4   # render the demo reel
+python3 tools/transcribe.py <cut.mp4> src/Reels/<edit>   # transcript + plan seed
+```
 
 ## Field Marketing Manager (`FieldMarketing`)
 

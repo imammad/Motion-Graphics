@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Edit Planner</title>
+<style>
+  :root {
+    --bg: #f4f2ee; --card: #fff; --ink: #141414; --muted: #8b8883; --line: #e6e3de;
+    --accent: #3a7bff;
+    --t-captions: #dbeafe; --t-captions_ui: #ccfbf1; --t-half: #dcfce7; --t-full: #fef9c3;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.45 Inter, system-ui, -apple-system, sans-serif; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 32px 16px 80px; }
+  header { display: flex; gap: 16px; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; }
+  h1 { margin: 0; font-size: 26px; letter-spacing: -0.4px; }
+  .meta { color: var(--muted); font-size: 12px; margin-top: 4px; font-family: ui-monospace, Menlo, monospace; }
+  .bar { display: flex; gap: 8px; flex-wrap: wrap; }
+  button, .btn { border: 1px solid var(--line); background: var(--card); color: var(--ink); border-radius: 10px; padding: 8px 14px; font: inherit; cursor: pointer; }
+  button.primary { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .section-title { margin: 32px 0 10px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); display: flex; justify-content: space-between; }
+  .panel { background: #ebe8e3; border-radius: 16px; padding: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .panel .full { grid-column: 1 / -1; }
+  label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 5px; }
+  input[type=text], textarea, select { width: 100%; border: 1px solid var(--line); background: var(--card); border-radius: 10px; padding: 9px 11px; font: inherit; color: var(--ink); }
+  textarea { resize: vertical; min-height: 44px; }
+  .color { display: flex; gap: 8px; }
+  .color input[type=color] { width: 44px; height: 40px; border: 1px solid var(--line); border-radius: 10px; padding: 3px; background: var(--card); }
+  .row { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px; display: grid; grid-template-columns: 1fr 1.25fr; gap: 18px; margin-bottom: 12px; }
+  .row .left .time { font-family: ui-monospace, Menlo, monospace; font-size: 11px; color: var(--muted); }
+  .row .left .text { font-size: 15px; margin: 4px 0 10px; }
+  .types { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .types button { padding: 5px 10px; font-size: 12px; border-radius: 8px; }
+  .types button.on { border-color: var(--ink); font-weight: 600; }
+  .types button[data-t=captions].on { background: var(--t-captions); }
+  .types button[data-t=captions_ui].on { background: var(--t-captions_ui); }
+  .types button[data-t=half].on { background: var(--t-half); }
+  .types button[data-t=full].on { background: var(--t-full); }
+  .row[data-t=captions] { border-left: 6px solid var(--t-captions); }
+  .row[data-t=captions_ui] { border-left: 6px solid var(--t-captions_ui); }
+  .row[data-t=half] { border-left: 6px solid var(--t-half); }
+  .row[data-t=full] { border-left: 6px solid var(--t-full); }
+  .small { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+  .small > div { flex: 1; min-width: 120px; }
+  .preview { margin-top: 8px; font-size: 13px; }
+  .preview em { font-family: Garamond, "EB Garamond", Georgia, serif; font-weight: 700; font-size: 18px; color: var(--accent); }
+  .linkbtn { background: none; border: 0; color: var(--muted); padding: 0; font-size: 12px; text-decoration: underline; cursor: pointer; }
+  .empty { text-align: center; color: var(--muted); padding: 40px; border: 2px dashed var(--line); border-radius: 16px; }
+  .legend { display: flex; gap: 10px; flex-wrap: wrap; font-size: 12px; color: var(--muted); }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; background: var(--c); }
+  @media (max-width: 760px) { .panel, .row { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1 id="title" contenteditable="true">Edit Plan</h1>
+      <div class="meta" id="meta">Load the plan.json Claude made from your cut video.</div>
+    </div>
+    <div class="bar">
+      <label class="btn" style="margin:0">Load plan.json<input id="file" type="file" accept=".json,application/json" hidden /></label>
+      <button id="copy">Copy JSON</button>
+      <button id="export" class="primary">Export plan.json</button>
+    </div>
+  </header>
+
+  <div class="section-title"><span>Constants for the whole edit</span><span>Never change scene to scene · saved automatically</span></div>
+  <div class="panel">
+    <div><label>Accent colour</label><div class="color"><input type="color" id="accentPick" /><input type="text" id="accent" data-style="accent" /></div></div>
+    <div><label>Full-screen / explainer background</label><input type="text" data-c="background" /></div>
+    <div><label>Caption font (regular words)</label><input type="text" data-c="sansFont" /></div>
+    <div><label>Caption font (special words)</label><input type="text" data-c="scriptFont" /></div>
+    <div class="full"><label>Caption style &amp; animation</label><textarea data-c="captionStyle"></textarea></div>
+    <div><label>Theme / look</label><textarea data-c="theme"></textarea></div>
+    <div><label>Lower-third UI rules</label><textarea data-c="uiRules"></textarea></div>
+    <div><label>Transitions &amp; camera</label><textarea data-c="camera"></textarea></div>
+    <div><label>Speaker video (inside /public)</label><input type="text" id="speakerSrc" placeholder="footage/client/edit/cut.mp4" /></div>
+    <div class="full"><label>Anything else that applies to every scene</label><textarea data-c="other"></textarea></div>
+  </div>
+
+  <div class="section-title"><span>Transcript &amp; scene plan</span>
+    <span class="legend"><span style="--c:var(--t-captions)">Captions only</span><span style="--c:var(--t-captions_ui)">Captions + UI</span><span style="--c:var(--t-half)">Half screen</span><span style="--c:var(--t-full)">Full screen</span></span>
+  </div>
+  <div id="rows"><div class="empty">No plan loaded yet. Click “Load plan.json”.</div></div>
+</div>
+
+<script>
+const DEFAULT_CONSTANTS = {
+  background: "Warm off-white #F4F2EE with a thin grey grid + soft casted window shadow",
+  sansFont: "Inter 500 (stand-in for Creato Display Medium)",
+  scriptFont: "EB Garamond Bold Italic (stand-in for Apple Garamond Bold Italic)",
+  captionStyle: "Lower half, centred, small sans + bigger script special word. Word-by-word pop (sans) and letter-by-letter pop (script): rise + fade + light blur, fast-then-slow, under 1.5 s. Special word in the accent with glow. Hook: drop shadow, no glow.",
+  theme: "3-tone: off-white / near-black / accent. Glossy 3D objects, glass UI cards, clean graphs.",
+  uiRules: "Dark glass cards in the lower third, kept small (75% scale), caption sits right above, background darkened + blurred behind.",
+  camera: "Circle / square reveals into full-screen scenes. Track the action, slow zoom-out, then snap to a new angle. Slow push-ins on A-roll.",
+  other: "",
+};
+const TYPES = [["captions", "Captions only"], ["captions_ui", "Captions + UI"], ["half", "Half screen"], ["full", "Full screen"]];
+const KEY = "edit-planner-v1";
+let plan = null;
+
+const load = () => { try { return JSON.parse(localStorage.getItem(KEY)); } catch (e) { return null; } };
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(plan)); } catch (e) {} };
+const fmt = (s) => { const m = Math.floor(s / 60); return `${m}:${(s % 60).toFixed(2).padStart(5, "0")}`; };
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const previewHTML = (rows) => rows.map((r) => esc(r).replace(/\*([^*]+)\*/g, "<em>$1</em>")).join("<br>");
+
+function normalise(p) {
+  p.style = p.style || {};
+  p.constants = Object.assign({}, DEFAULT_CONSTANTS, p.constants || {});
+  p.lines.forEach((l) => { l.caption = l.caption || [l.text]; l.type = l.type || "captions"; l.notes = l.notes || ""; });
+  return p;
+}
+
+function renderConstants() {
+  document.getElementById("title").textContent = plan.title || "Edit Plan";
+  const dur = plan.lines.length ? plan.lines[plan.lines.length - 1].end : 0;
+  document.getElementById("meta").textContent = `${plan.speakerSrc || "no video set"} · ${plan.width || 1080}×${plan.height || 1920} · ${plan.fps || 30} fps · ${dur.toFixed(1)} s · ${plan.lines.length} lines`;
+  const accent = plan.style.accent || "#3A7BFF";
+  document.getElementById("accent").value = accent;
+  document.getElementById("accentPick").value = accent;
+  document.documentElement.style.setProperty("--accent", accent);
+  document.getElementById("speakerSrc").value = plan.speakerSrc || "";
+  document.querySelectorAll("[data-c]").forEach((el) => { el.value = plan.constants[el.dataset.c] || ""; });
+}
+
+function renderRows() {
+  const box = document.getElementById("rows");
+  box.innerHTML = "";
+  plan.lines.forEach((l, i) => {
+    const row = document.createElement("div");
+    row.className = "row";
+    row.dataset.t = l.type;
+    row.innerHTML = `
+      <div class="left">
+        <div class="time">${esc(l.id)} · ${fmt(l.start)} – ${fmt(l.end)}</div>
+        <div class="text">${esc(l.text)}</div>
+        <label>Caption rows (one per line, *special words* in asterisks)</label>
+        <textarea data-f="caption" rows="2">${esc(l.caption.join("\n"))}</textarea>
+        <div class="preview">${previewHTML(l.caption)}</div>
+        ${i < plan.lines.length - 1 ? '<button class="linkbtn" data-merge>Merge with next line</button>' : ""}
+      </div>
+      <div>
+        <div class="types">${TYPES.map(([t, n]) => `<button data-t="${t}" class="${l.type === t ? "on" : ""}">${n}</button>`).join("")}</div>
+        <label>What happens on screen</label>
+        <textarea data-f="notes" rows="3" placeholder="e.g. Half screen: app icon starts too big, snaps 25% smaller, -25% badge + confetti">${esc(l.notes)}</textarea>
+        <div class="small">
+          <div><label>Speaker camera</label><select data-f="zoom">${["", "push", "punch", "none"].map((z) => `<option value="${z}" ${(l.zoom || "") === z ? "selected" : ""}>${z || "auto"}</option>`).join("")}</select></div>
+          <div><label>Caption position</label><select data-f="captionPosition">${["", "lower", "chest", "top"].map((z) => `<option value="${z}" ${(l.captionPosition || "") === z ? "selected" : ""}>${z || "auto"}</option>`).join("")}</select></div>
+        </div>
+      </div>`;
+    row.querySelectorAll(".types button").forEach((b) => b.addEventListener("click", () => {
+      l.type = b.dataset.t;
+      l.scene = l.type === "captions" ? undefined : (l.scene || l.id.toLowerCase());
+      save(); renderRows();
+    }));
+    row.querySelectorAll("[data-f]").forEach((el) => el.addEventListener("input", () => {
+      const f = el.dataset.f;
+      if (f === "caption") { l.caption = el.value.split("\n").filter((s) => s.trim()); row.querySelector(".preview").innerHTML = previewHTML(l.caption); }
+      else if (el.value === "") delete l[f];
+      else l[f] = el.value;
+      save();
+    }));
+    const m = row.querySelector("[data-merge]");
+    if (m) m.addEventListener("click", () => {
+      const n = plan.lines[i + 1];
+      l.text = `${l.text} ${n.text}`; l.end = n.end;
+      l.caption = l.caption.concat(n.caption);
+      l.captionTimes = (l.captionTimes || []).concat(n.captionTimes || []);
+      l.notes = [l.notes, n.notes].filter(Boolean).join(" ");
+      plan.lines.splice(i + 1, 1);
+      save(); renderConstants(); renderRows();
+    });
+    box.appendChild(row);
+  });
+}
+
+function setPlan(p) { plan = normalise(p); save(); renderConstants(); renderRows(); }
+
+document.getElementById("file").addEventListener("change", async (e) => {
+  const f = e.target.files[0]; if (!f) return;
+  try { setPlan(JSON.parse(await f.text())); } catch (err) { alert("That file is not a valid plan.json: " + err.message); }
+});
+document.getElementById("title").addEventListener("input", (e) => { if (plan) { plan.title = e.target.textContent.trim(); save(); } });
+const setAccent = (v) => { if (!plan) return; plan.style.accent = v; document.documentElement.style.setProperty("--accent", v); save(); };
+document.getElementById("accent").addEventListener("input", (e) => { setAccent(e.target.value); if (/^#[0-9a-f]{6}$/i.test(e.target.value)) document.getElementById("accentPick").value = e.target.value; });
+document.getElementById("accentPick").addEventListener("input", (e) => { document.getElementById("accent").value = e.target.value.toUpperCase(); setAccent(e.target.value.toUpperCase()); });
+document.getElementById("speakerSrc").addEventListener("input", (e) => { if (plan) { plan.speakerSrc = e.target.value || undefined; save(); } });
+document.querySelectorAll("[data-c]").forEach((el) => el.addEventListener("input", () => { if (plan) { plan.constants[el.dataset.c] = el.value; save(); } }));
+
+const json = () => JSON.stringify(plan, null, 1);
+document.getElementById("export").addEventListener("click", () => {
+  if (!plan) return;
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([json()], { type: "application/json" }));
+  a.download = "plan.json"; a.click();
+});
+document.getElementById("copy").addEventListener("click", async () => {
+  if (!plan) return;
+  try { await navigator.clipboard.writeText(json()); document.getElementById("copy").textContent = "Copied"; setTimeout(() => (document.getElementById("copy").textContent = "Copy JSON"), 1200); }
+  catch (e) { prompt("Copy the plan:", json()); }
+});
+
+const saved = load();
+if (saved && saved.lines) setPlan(saved);
+</script>
+</body>
+</html>

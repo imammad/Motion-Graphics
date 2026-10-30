@@ -29,6 +29,7 @@ export type Plan = {
   width: number;
   height: number;
   style?: Partial<StyleProfile>; // overrides for this edit (accent, fonts…)
+  constants?: Record<string, string>; // free-text rules from the planning page
   lines: PlanLine[];
 };
 
