@@ -15,7 +15,7 @@ A repeatable system for editing 9:16 talking-head reels with Claude + Remotion, 
 | `styles/` | One filled-in Client Style Brief per client |
 | `references/` | Reference reel frames, guide frames, 219 inspiration images |
 | `../.claude/skills/mgskill/` | The knowledge skill: all motion graphics craft, any style, any single scene. Portable |
-| `skills/mgskill.zip` | The same skill packaged for claude.ai upload |
+| `skills/mgskill.skill` | The same skill packaged: open it in a Claude chat and click Save skill |
 | `../.claude/skills/viral-talking-head-editor/` | The reel workflow skill (planner → build → render) for this repo |
 | `../planner/index.html` | The planning page (open in a browser) |
 | `../tools/transcribe.py` | Word-level transcript + planner seed from your cut video |
@@ -38,7 +38,7 @@ It holds the knowledge, not one look. Styles are plug-ins: add your client brief
 
 - **This repo (Claude Code):** loads automatically.
 - **Every project on your computer:** copy the folder to `~/.claude/skills/mgskill/`.
-- **claude.ai:** upload `system/skills/mgskill.zip` in Settings, in the Skills section (skills must be enabled for your account). Re-zip after adding briefs: `python3 system/package_skill.py`.
+- **Your Claude account (claude.ai, desktop, mobile):** send `system/skills/mgskill.skill` in a chat and click **Save skill** on the file card, or upload it in Settings → Skills. After adding briefs, rebuild it with `python3 system/package_skill.py` and save it again.
 
 ## Rebuild the PDFs after editing the docs
 

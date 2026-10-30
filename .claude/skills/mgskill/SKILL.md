@@ -1,6 +1,7 @@
 ---
 name: mgskill
-description: Motion graphics expert knowledge for short-form video (9:16 reels, TikTok, Shorts, also 16:9): how to design and animate full-screen animations, half-screen animations, on-screen lower-third UI, kinetic captions, transitions and camera moves in ANY visual style, built in Remotion. Style-agnostic craft (composition, typography, colour, motion timing, camera, retention) plus pluggable client style profiles. Use whenever the user asks for any motion graphic, animation, scene, caption style, UI animation or explainer visual, even a single one ("just a full-screen animation", "make this in my other style", "animate this stat"), names a client/style, attaches a client brief, or refers to "mgskill" or "my motion graphics skill".
+description: >-
+  Motion graphics expert knowledge for short-form video (9:16 reels, TikTok, Shorts, also 16:9): how to design and animate full-screen animations, half-screen animations, on-screen lower-third UI, kinetic captions, transitions and camera moves in ANY visual style, built in Remotion. Style-agnostic craft (composition, typography, colour, motion timing, camera, retention) plus pluggable client style profiles. Use whenever the user asks for any motion graphic, animation, scene, caption style, UI animation or explainer visual, even a single one ("just a full-screen animation", "make this in my other style", "animate this stat"), names a client/style, attaches a client brief, or refers to "mgskill" or "my motion graphics skill".
 ---
 
 # mgskill: Motion Graphics Expert

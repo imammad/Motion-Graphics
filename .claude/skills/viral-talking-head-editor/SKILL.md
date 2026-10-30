@@ -1,6 +1,7 @@
 ---
 name: viral-talking-head-editor
-description: Edit 9:16 talking-head reels (Instagram Reels, TikTok, Shorts) in the house "viral talking-head" style with Remotion and the ReelKit components in this repo. Two-font captions (sans + accent script), dark-glass lower-third UIs, half-screen and full-screen paper-world animations, camera moves. Use for any request to plan, animate, caption or render a short-form talking-head video, to onboard a new client style, or when the user pastes the planning-page plan.json or one of the prompts in system/prompts. Cutting and sound design are done by the user, not by this skill.
+description: >-
+  Edit 9:16 talking-head reels (Instagram Reels, TikTok, Shorts) in the house "viral talking-head" style with Remotion and the ReelKit components in this repo. Two-font captions (sans + accent script), dark-glass lower-third UIs, half-screen and full-screen paper-world animations, camera moves. Use for any request to plan, animate, caption or render a short-form talking-head video, to onboard a new client style, or when the user pastes the planning-page plan.json or one of the prompts in system/prompts. Cutting and sound design are done by the user, not by this skill.
 ---
 
 # Viral Talking-Head Editor
