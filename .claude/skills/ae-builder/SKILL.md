@@ -286,3 +286,21 @@ The mock is not After Effects. Say "verified in a strict mock, not yet run in AE
 - `scripts/verify_curves.py`: compares written keys against the source curves; exit 1 above 2%.
 - `scripts/fetch_fonts.py`: bundles open-licence fonts with licences and PostScript names.
 - `references/easing_translation.md`, `references/ae_runtime_facts.md`, `references/postmortem_coh_rebuild.md`.
+
+---
+
+## 14. This repo (Motion-Graphics, Remotion): do it fast, the proven way
+
+The user wants speed and zero AE round trips. Don't ask setup questions when the source answers them (Remotion = 1920x1080, 30 fps, AE 2023+, no footage). Reuse what already works:
+
+- **Template:** `ae/FieldMarketing_ae/` (EventsScene, ran clean in real AE). Copy `generator/` for a new scene and change only the scene-specific parts:
+  - `generator/measure/index.tsx` + `measure.mjs`: renders the real scene in Chrome and logs every element's rect and text runs (`node .../measure.mjs <outDir> <browser>`). Text baseline = range top + round(0.96875 * fontSize) (Inter ascent, Chrome rounds it). `.gitignore` ignores `out/`: `git add -f` the layout JSON.
+  - `generator/source_curves.mjs`: samples the scene's channels with Remotion's own `spring`/`interpolate`/`Easing` (1/8 frame). `build.py` fits them with `fit_move(..., fps=30)`; `verify_source.py` checks the dumped keys against those samples (the stock `verify_curves.py` only knows presets at 25 fps).
+  - `generator/build_body.jsx`: helpers `txtAt` (baseline-left text), `linKeys` (exact linear keys), `shadow` (Drop Shadow, opacity scaled by `maxValue`, failure = report line not crash), `guide`, `noBlur` (Remotion renders have no motion blur).
+- **Environment facts (cloud container):**
+  - Fonts: Google Fonts raw files and jsDelivr are blocked; GitHub releases work. Inter: `https://github.com/rsms/inter/releases/download/v4.0/Inter-4.0.zip` > `extras/ttf/Inter-*.ttf` (matches the project's Inter 4 variable font; PostScript names `Inter-SemiBold`, `Inter-Bold`, `Inter-ExtraBold`).
+  - Remotion can't download its browser: pass `--browser-executable=/opt/pw-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell` (CLI) or `browserExecutable` (Node API). Browser `console.log` only comes back through the Node API's `onBrowserLog`. Run `npm ci` first.
+  - Python needs `pip install fonttools brotli pillow numpy`. Run the skill's Python without `-I` (it imports `ease_fit` from its own folder).
+- **Bugs already hit in real AE (all now prevented, keep it that way):** locked layers can't be moved/changed, so use `lockLater()`, never `.locked = true` mid-build. Guide layers show in the viewer: `GUIDE_READ_ME` gets its eye off.
+- **Hand-off:** tell the user up front to install the bundled fonts before running (missing fonts = Times everywhere), and to run in a new project. Ship the zip with SendUserFile, commit + push the generator.
+- **Remaining FieldMarketing scenes** (src/FieldMarketing): AskScene, RoleScene, AnswersScene, BoothScene, ShrugScene. Same theme, Background, Headline/Quote, Window, Cursor components as EventsScene, so most of build_body.jsx carries over. Full-video timing: scenes 150/135/190/135/150/150 frames with 15-frame transitions (see FieldMarketingVideo.tsx).
