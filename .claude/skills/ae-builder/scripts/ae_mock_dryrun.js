@@ -197,7 +197,9 @@ COMPS.forEach(c => {
   });
 });
 function hasFx(L, n) { const fxp = L.root.children.find(p => p.matchName === 'ADBE Effect Parade'); return fxp && fxp.children.some(e => e.name === n); }
-if (process.env.DUMP_KEYS) { const out = {}; COMPS.forEach(c => c._layers.forEach(L => walk(L.root, p => { if (p.keys && p.keys.length > 1) out[c.name + ' > ' + L.name + ' > ' + p.name] = { keys: p.keys, eases: p.eases || {} }; }))); fs.writeFileSync(process.env.DUMP_KEYS, JSON.stringify(out)); }
+// Each keyed property is dumped twice: "Comp > Layer > name" (short, collides when a layer has several sliders, since
+// every slider's value is named 1) and "Comp > Layer > ADBE Effect Parade/Slider Name/1" (full path, always unique).
+if (process.env.DUMP_KEYS) { const out = {}; COMPS.forEach(c => c._layers.forEach(L => walk(L.root, p => { if (p.keys && p.keys.length > 1) { const rec = { keys: p.keys, eases: p.eases || {} }; out[c.name + ' > ' + L.name + ' > ' + p.name] = rec; out[p.where()] = rec; } }))); fs.writeFileSync(process.env.DUMP_KEYS, JSON.stringify(out)); }
 console.log('ALERT FROM SCRIPT:\n' + ALERT + '\n'); console.log('asset-folder prompts:', PROMPTED, ' ease retries:', EASE_THROWS, ' stale handles:', STALE);
 console.log('DRY-RUN STATS', JSON.stringify(STATS));
 const uniq = [...new Set(ISSUES)].filter(m => !/nm\.indexOf\($/.test(m));
