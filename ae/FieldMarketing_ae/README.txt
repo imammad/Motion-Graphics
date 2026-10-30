@@ -2,7 +2,7 @@ FieldMarketing - Scene 4 "They booked the events." - After Effects rebuild (pilo
 ==================================================================================
 
 HOW TO RUN
-1. Install the fonts in fonts/ (Inter-ExtraBold, Inter-Bold, Inter-SemiBold): double-click > Install. Restart AE.
+1. FIRST install the fonts in fonts/ (if you skip this, all text shows in Times) (Inter-ExtraBold, Inter-Bold, Inter-SemiBold): double-click > Install. Restart AE.
 2. Open After Effects 2023 or newer, File > New > New Project.
 3. Keep this folder unzipped as it is. File > Scripts > Run Script File... > FieldMarketing_EventsScene_Rebuild.jsx
 4. Success looks like: "Built 4 of 4 comps. No errors."
@@ -29,6 +29,7 @@ HOW TO CHANGE...
   Want plain keys instead of an expression? Select the property > Animation > Keyframe Assistant >
   Convert Expression to Keyframes.
 
+GUIDE_READ_ME layers (yellow) hold these notes inside AE. Their eye is off so they don't cover the picture: switch it on to read.
 LABELS: red = controls (CTRL_), purple = driven by an expression, yellow = guides, sandstone = artwork.
 CLIPPING: none needed. The window precomp's own frame clips the cursor while it is outside the window.
 

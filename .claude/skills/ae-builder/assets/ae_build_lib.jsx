@@ -12,7 +12,9 @@
 var FPS = 25, W = 1920, H = 1080;                 // overwritten by the build script's project settings
 var HAS_NEW_MATTES = parseFloat(app.version) >= 23;
 var ERRORS = [], WARN = [], DONE = [], EXPR_COUNT = 0, KEY_COUNT = 0, LAYER_COUNT = 0, MATTE_COUNT = 0;
-var EXPRS = [], LCTRL = [], MATTES = [];
+var EXPRS = [], LCTRL = [], MATTES = [], LOCKS = [];
+// AE refuses to move, parent or change a LOCKED layer. Never set .locked during a build: lockLater(L), finishComp locks them last.
+function lockLater(L) { LOCKS.push(L); return L; }
 var OFF = 0;                                      // parent-timeline time that sits at time 0 of the comp being built
 
 // ---------------------------------------------------------------- time: author in seconds, snapped to whole frames
@@ -341,13 +343,14 @@ function finishComp(c) {
     catch (err) { ERRORS.push(c.name + " > " + e.L.name + ": " + err.toString()); }
   }
   var bad = checkMattes(c); for (i = 0; i < bad.length; i++) ERRORS.push(c.name + ": " + bad[i]);
-  EXPRS = []; LCTRL = []; MATTES = [];
+  for (i = 0; i < LOCKS.length; i++) { try { LOCKS[i].locked = true; } catch (e) { } }                  // 5 lock last
+  EXPRS = []; LCTRL = []; MATTES = []; LOCKS = [];
 }
 
 // ---------------------------------------------------------------- build isolation + honest report
 function safe(name, fn) {
   try { var r = fn(); if (r) DONE.push(name); return r; }
-  catch (e) { ERRORS.push(name + " FAILED: " + e.toString() + (e.line ? " (script line " + e.line + ")" : "")); EXPRS = []; LCTRL = []; MATTES = []; return null; }
+  catch (e) { ERRORS.push(name + " FAILED: " + e.toString() + (e.line ? " (script line " + e.line + ")" : "")); EXPRS = []; LCTRL = []; MATTES = []; LOCKS = []; return null; }
 }
 function report(title, totalComps) {
   var head = title + "\nBuilt " + DONE.length + " of " + totalComps + " comps.  Layers: " + LAYER_COUNT + "   Keyframes: " + KEY_COUNT + "   Expressions: " + EXPR_COUNT + "   Mattes: " + MATTE_COUNT;

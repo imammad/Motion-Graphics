@@ -37,7 +37,7 @@ function linKeys(L, which, pts) {
 function marker(L, t, text) { prop(L, "ADBE Marker").setValueAtTime(lt(t), new MarkerValue(text)); }
 function guide(c, lines) {
   var T = txtAt(c, "GUIDE_READ_ME", lines.join("\r"), "Inter-SemiBold", 16, "#C0392B", 0, [30, 40]);
-  T.guideLayer = true; T.label = 2; T.locked = true; return T;
+  T.guideLayer = true; T.enabled = false; T.label = 2; lockLater(T); return T;   // eye off: it would cover the scene in the viewer
 }
 function noBlur(c) { try { c.motionBlur = false; } catch (e) { } }   // the Remotion render has no motion blur
 
@@ -50,9 +50,9 @@ function buildGrid(fold) {
     var ce = LAY.cells[i]; if (ce.day == 8 || ce.day == 16 || ce.day == 23) continue;
     var g = grp(cl, "Day " + ce.day); rect(g, ce.w, 84, ce.x, ce.y, 14); fill(g, CELL);   // finished before the next grp()
   }
-  cl.locked = true;
-  for (i = 0; i < LAY.days.length; i++) { var d = LAY.days[i]; if (d.day == 8 || d.day == 16 || d.day == 23) continue; txtAt(c, "Day_" + (d.day < 10 ? "0" : "") + d.day, String(d.day), "Inter-SemiBold", 20, INK, 0, d.pos).locked = true; }
-  for (i = 0; i < LAY.weekdays.length; i++) txtAt(c, "Weekday_" + (i + 1) + "_" + LAY.weekdays[i].t, LAY.weekdays[i].t, "Inter-Bold", 20, MUTED, 0, LAY.weekdays[i].pos).locked = true;
+  lockLater(cl);
+  for (i = 0; i < LAY.days.length; i++) { var d = LAY.days[i]; if (d.day == 8 || d.day == 16 || d.day == 23) continue; lockLater(txtAt(c, "Day_" + (d.day < 10 ? "0" : "") + d.day, String(d.day), "Inter-SemiBold", 20, INK, 0, d.pos)); }
+  for (i = 0; i < LAY.weekdays.length; i++) lockLater(txtAt(c, "Weekday_" + (i + 1) + "_" + LAY.weekdays[i].t, LAY.weekdays[i].t, "Inter-Bold", 20, MUTED, 0, LAY.weekdays[i].pos));
   finishComp(c); return c;
 }
 
@@ -61,13 +61,13 @@ function buildWindow(fold, grid, root, assetsFold) {
   var c = makeComp("PRE_Window", DUR, fold, "The 'Events · October' app window, 860x720. Its entrance (slide, tilt, fade) and shadow are on the PRE_Window layer in S4. Inside: chips pop in (CTRL_Chips), the cursor travels to the button and clicks (CTRL_Click).", 860, 720);
   noBlur(c); var i;
   var card = shp(c, "Card", 430, 360), g = grp(card, "Card"); rect(g, 859, 719, 0, 0, 27.5); stroke(g, BLUE_TINT, 1); fill(g, WHITE);
-  card.locked = true;
-  var dv = shp(c, "Header_Divider", 430, 64.5), gd = grp(dv, "Line"); rect(gd, 858, 1, 0, 0, 0); fill(gd, BLUE_TINT); dv.locked = true;
+  lockLater(card);
+  var dv = shp(c, "Header_Divider", 430, 64.5), gd = grp(dv, "Line"); rect(gd, 858, 1, 0, 0, 0); fill(gd, BLUE_TINT); lockLater(dv);
   var dots = shp(c, "Header_Dots", 0, 0);
   for (i = 0; i < 3; i++) { var gg = grp(dots, "Dot " + (i + 1)); ell(gg, 14, 14, LAY.dots[i][0], LAY.dots[i][1]); fill(gg, i == 0 ? BLUE : BLUE_TINT); }
-  dots.locked = true;
+  lockLater(dots);
   txtAt(c, "Title", "Events · October", "Inter-SemiBold", 24, MUTED, 0, LAY.title);
-  var gl = c.layers.add(grid); gl.name = "PRE_Calendar_Grid"; gl.locked = true;
+  var gl = c.layers.add(grid); gl.name = "PRE_Calendar_Grid"; lockLater(gl);
 
   // chips + the three event days
   var ctrlC = nul(c, "CTRL_Chips", 60, 30);
@@ -142,9 +142,9 @@ function buildWindow(fold, grid, root, assetsFold) {
 function buildScene(fold, win, root, assetsFold) {
   var c = makeComp("S4_BookedTheEvents", DUR, fold, "Scene 4 of FieldMarketing: 'One person will tell you they booked the events.' 135 frames. In the full video it starts at frame 430 (14.33 s), after a 15-frame slide transition.");
   noBlur(c); var i;
-  var bg = rrLayer(c, "BG_White", 960, 540, 1920, 1080, 0, WHITE); bg.locked = true;
+  var bg = rrLayer(c, "BG_White", 960, 540, 1920, 1080, 0, WHITE); lockLater(bg);
   var im = importAsset(root, "assets/dot_grid.png", assetsFold);
-  if (im) { var dg = c.layers.add(im); dg.name = "BG_DotGrid"; setv(P(dg), [960, 540]); setv(O(dg), 90); dg.locked = true; LAYER_COUNT++; }
+  if (im) { var dg = c.layers.add(im); dg.name = "BG_DotGrid"; setv(P(dg), [960, 540]); setv(O(dg), 90); lockLater(dg); LAYER_COUNT++; }
   var glows = [["BG_Glow_TopLeft", "assets/glow_top_left.png", [170, 30], [140, 80]], ["BG_Glow_BottomRight", "assets/glow_bottom_right.png", [1780, 1100], [-160, -60]]];
   for (i = 0; i < glows.length; i++) {
     var gi = importAsset(root, glows[i][1], assetsFold); if (!gi) continue;

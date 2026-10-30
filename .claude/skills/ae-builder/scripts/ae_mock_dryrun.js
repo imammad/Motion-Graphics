@@ -83,8 +83,8 @@ class Prop {
   addProperty(m) { if (INDEXED.has(this.matchName)) this.gen = (this.gen || 0) + 1; if (process.env.BREAK && m === (process.env.BREAK === '1' ? 'ADBE Drop Shadow' : process.env.BREAK)) throw new Error('simulated AE error adding ' + m); const p = new Prop(m, this, this.layer); this.children.push(p); return handle(p); }
   get numProperties() { return this.children.length; }
   moveTo(i) { const par = this.parentProperty; if (INDEXED.has(par.matchName)) par.gen = (par.gen || 0) + 1; const a = par.children; a.splice(a.indexOf(this), 1); a.splice(i - 1, 0, this); }
-  setValue(v) { if (hasNaN(v)) issue(`NaN value on ${this.where()}`); this._value = v; }
-  setValueAtTime(t, v) { if (!isFinite(t)) issue(`bad key time on ${this.where()}`); if (hasNaN(v)) issue(`NaN key value on ${this.where()} at ${t}`);
+  setValue(v) { lockCheck(this.layer, 'setValue'); if (hasNaN(v)) issue(`NaN value on ${this.where()}`); this._value = v; }
+  setValueAtTime(t, v) { lockCheck(this.layer, 'setValueAtTime'); if (!isFinite(t)) issue(`bad key time on ${this.where()}`); if (hasNaN(v)) issue(`NaN key value on ${this.where()} at ${t}`);
     if (this.keys.some(k => Math.abs(k.t - t) < 1e-6)) issue(`two keys on the same frame (${t.toFixed(2)}s) on ${this.where()}`);
     this.keys.push({ t, v }); this.keys.sort((a, b) => a.t - b.t); this._value = v; STATS.keys++; }
   nearestKeyIndex(t) { let best = 0, d = 1e9; this.keys.forEach((k, i) => { if (Math.abs(k.t - t) < d) { d = Math.abs(k.t - t); best = i; } }); return best + 1; }
@@ -94,10 +94,12 @@ class Prop {
   setTemporalEaseAtKey(k, inE, outE) { this.eases = this.eases || {}; this.eases[k] = [inE.map(e => [e.speed, e.influence]), outE.map(e => [e.speed, e.influence])]; if (this.holdOnly) throw new Error('no eases on hold-only property'); let d = easeDims(this.propertyValueType); if (process.env.SCALE2 && this.matchName === 'ADBE Scale') d = 2;
     if (inE.length !== d || outE.length !== d) { EASE_THROWS++; throw new Error('wrong number of eases'); }
     inE.concat(outE).forEach(e => { if (!isFinite(e.speed) || !(e.influence >= 0.1 && e.influence <= 100)) issue(`bad ease ${JSON.stringify(e)} on ${this.where()}`); }); }
-  set expression(t) { this._expr = t; STATS.exprs++; }
+  set expression(t) { lockCheck(this.layer, 'expression'); this._expr = t; STATS.exprs++; }
   get expression() { return this._expr; }
   where() { let n = [], p = this; while (p && p.parentProperty) { n.unshift(p.name); p = p.parentProperty; } return `${this.layer ? this.layer.containingComp.name + ' > ' + this.layer.name : '?'} > ${n.join('/')}`; }
 }
+// AE refuses to move, re-parent or change a LOCKED layer: "Can not call method ... because the Layer is locked".
+function lockCheck(L, what) { if (L && L.locked) throw new Error('After Effects error: Can not call method "' + what + '" on Layer "' + L.name + '" because the Layer is locked.'); }
 class TextDocument { constructor(t) { this.text = t; } resetCharStyle() { } resetParagraphStyle() { } }
 class Layer {
   constructor(comp, kind, src, text) { this.containingComp = comp; this.kind = kind; this.source = src; this.root = new Prop('root', null, this); this.name = kind; this.enabled = true; this.label = 0; this.parent = null; this._matte = null;
@@ -107,9 +109,9 @@ class Layer {
   get index() { return this.containingComp._layers.indexOf(this) + 1; }
   set startTime(t) { this._st = t; if (this.source && this.source.sequence) { this.inPoint = t; this.outPoint = t + this.source.duration; } }
   get startTime() { return this._st; }
-  setParentWithJump(p) { if (p.containingComp !== this.containingComp) issue(`parent in another comp: ${this.name}`); this.parent = p; }
-  moveToBeginning() { const a = this.containingComp._layers; a.splice(a.indexOf(this), 1); a.unshift(this); }
-  moveBefore(o) { const a = this.containingComp._layers; a.splice(a.indexOf(this), 1); a.splice(a.indexOf(o), 0, this); }
+  setParentWithJump(p) { lockCheck(this, 'setParentWithJump'); if (p.containingComp !== this.containingComp) issue(`parent in another comp: ${this.name}`); this.parent = p; }
+  moveToBeginning() { lockCheck(this, 'moveToBeginning'); const a = this.containingComp._layers; a.splice(a.indexOf(this), 1); a.unshift(this); }
+  moveBefore(o) { lockCheck(this, 'moveBefore'); const a = this.containingComp._layers; a.splice(a.indexOf(this), 1); a.splice(a.indexOf(o), 0, this); }
   sourceRectAtTime() { const d = this.kind === 'text' ? this.property('ADBE Text Properties').property('ADBE Text Document').value : null, s = d && d.fontSize ? d.fontSize : 20, w = (d && d.text ? d.text.length : 5) * s * 0.62;
     return { left: d && d.justification === 'L' ? 0 : -w / 2, top: -s * 0.72, width: w, height: s * 0.72 }; }
   setTrackMatte(m, type) { this._matte = m; this._mtype = type; }

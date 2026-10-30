@@ -26,6 +26,7 @@ add the rule to the mock FIRST, reproduce their exact summary numbers, then fix 
 | Expression Selector **Amount** returns 3 values | (prevented) | Return `[a, a, a]`. |
 | Shape fill/stroke colours want `[r, g, b, a]`; text `fillColor` wants `[r, g, b]` | (prevented) | `rgba()` for shapes, `rgb()` for text. |
 | Drop Shadow opacity range differs (0-255 vs %) across versions | (prevented) | `try` 255, fall back to 100. |
+| A **locked** layer can't be moved, parented or changed: "Can not call method 'moveToBeginning' on Layer ... because the Layer is locked". | GUIDE_READ_ME was locked when created; `finishComp` then moved it to the top and 3 of 4 comps failed (FieldMarketing EventsScene). | Never set `.locked` during a build: `lockLater(L)`; `finishComp` locks them last. The mock throws on locked layers. |
 | Two keys snapped onto the same frame by float rounding (`13.35 - 11.81 = 1.5399999`) | 3 opacity keys collided | Snap with `Math.round(t * fps + 1e-6)`, keep keys at least one frame apart. The fitter enforces it. |
 
 ## 3. Verified matchNames
