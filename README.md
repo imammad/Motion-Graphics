@@ -19,6 +19,22 @@ Scenes (in `src/FieldMarketing/`, each also registered as its own composition):
 
 Colors and the font live in `src/FieldMarketing/theme.ts`. Scene durations are set in `FieldMarketingVideo.tsx`.
 
+## Pension Trade-Off (`PensionTradeOff`)
+
+A 1920×1080, 60fps, 36s full-screen animation synced to the voice-over in `public/audio/pension-tradeoff.mp3`, in the client's dark forest-green / mint / rust style (Big Shoulders Display + Inter).
+
+Beats (in `src/PensionTradeOff/`; word times live in `theme.ts` as `VO`):
+
+1. `S1TradeOff`: "pensions ... really important but a very difficult trade-off", a balance beam (TODAY vs RETIREMENT)
+2. `S2Income`: a pension contribution cuts adjusted net income from £110K to £98K, below the £100K threshold
+3. `S3Benefits`: childcare allowances come back, and the 62% tax rate is struck through
+4. `S4GivingUp`: "but you are giving up all of that money", £ tokens move into a pension box
+5. `S5OverHundredK`: OVER £100K, 62% tax vs 38% kept; the 38p then splits into cost of living, childcare and everything else
+
+```console
+npx remotion render PensionTradeOff out/pension-tradeoff.mp4
+```
+
 ## Commands
 
 ```console

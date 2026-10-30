@@ -11,6 +11,8 @@ import {
 import { RoleScene } from "./FieldMarketing/RoleScene";
 import { ShrugScene } from "./FieldMarketing/ShrugScene";
 import { FPS, HEIGHT, WIDTH } from "./FieldMarketing/theme";
+import { PensionTradeOff } from "./PensionTradeOff/PensionTradeOff";
+import * as PT from "./PensionTradeOff/theme";
 
 const scenes = [
   { id: "Ask", component: AskScene, durationInFrames: SCENES.ask },
@@ -31,6 +33,14 @@ export const RemotionRoot: React.FC = () => {
         fps={FPS}
         width={WIDTH}
         height={HEIGHT}
+      />
+      <Composition
+        id="PensionTradeOff"
+        component={PensionTradeOff}
+        durationInFrames={PT.DURATION_S * PT.FPS}
+        fps={PT.FPS}
+        width={PT.WIDTH}
+        height={PT.HEIGHT}
       />
       <Folder name="FieldMarketing-Scenes">
         {scenes.map((s) => (
