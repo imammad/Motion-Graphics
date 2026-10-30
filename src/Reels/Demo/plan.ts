@@ -1,0 +1,77 @@
+import type { Plan } from "../../ReelKit";
+
+// Example plan, written exactly the way the planning page exports it.
+// Replace with a real plan.json (planner/index.html → Export) for client work.
+export const demoPlan: Plan = {
+  title: "Demo · 3 habits that make your brand look cheap",
+  // speakerSrc: "footage/cut.mp4",  ← drop the cut talking-head video in /public/footage
+  fps: 30,
+  width: 1080,
+  height: 1920,
+  lines: [
+    {
+      id: "L01",
+      start: 0,
+      end: 3.2,
+      text: "These three habits make your brand look cheap.",
+      caption: ["These *three habits*", "make your brand look cheap"],
+      captionPosition: 980,
+      type: "captions_ui",
+      scene: "hookTracker",
+      notes: "Hook. Captions, 'three habits' in blue. Red-outlined 1-2-3 tracker pops in under the text.",
+    },
+    {
+      id: "L02",
+      start: 3.2,
+      end: 6.4,
+      text: "Here's how to take it from cheap to premium.",
+      caption: ["Here's how to take it from", "*cheap to premium*"],
+      captionPosition: 960,
+      type: "captions_ui",
+      scene: "slider",
+      zoom: "punch",
+      notes: "Punch in on face. Cursor drags a slider from Cheap to Premium.",
+    },
+    {
+      id: "L03",
+      start: 6.4,
+      end: 8.4,
+      text: "Number one: use fewer colours.",
+      caption: ["Number one:", "*use fewer colours*"],
+      captionPosition: 1000,
+      type: "captions_ui",
+      scene: "chapter1",
+      notes: "Chapter UI, circle 1 fills, title under it.",
+    },
+    {
+      id: "L04",
+      start: 8.4,
+      end: 12.4,
+      text: "Premium brands use three colours, max.",
+      caption: ["Premium brands use", "*three colours max*"],
+      type: "full",
+      scene: "palette",
+      notes: "Full screen. Palette card in the centre, swatches pop in, hex pills around it, camera slowly pulls out.",
+    },
+    {
+      id: "L05",
+      start: 12.4,
+      end: 15.6,
+      text: "Make every element 25% smaller.",
+      caption: ["Make every element", "*25% smaller*"],
+      type: "half",
+      scene: "shrink",
+      notes: "Half screen. App icon starts too big, snaps 25% smaller, -25% badge + confetti.",
+    },
+    {
+      id: "L06",
+      start: 15.6,
+      end: 17.6,
+      text: "And watch it look expensive.",
+      caption: ["and watch it look", "*expensive.*"],
+      type: "captions",
+      zoom: "push",
+      notes: "Captions only, slow push-in to end.",
+    },
+  ],
+};

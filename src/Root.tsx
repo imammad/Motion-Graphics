@@ -10,6 +10,9 @@ import {
 } from "./FieldMarketing/FieldMarketingVideo";
 import { RoleScene } from "./FieldMarketing/RoleScene";
 import { ShrugScene } from "./FieldMarketing/ShrugScene";
+import { planDuration } from "./ReelKit";
+import { DemoReel } from "./Reels/Demo/DemoReel";
+import { demoPlan } from "./Reels/Demo/plan";
 import { FPS, HEIGHT, WIDTH } from "./FieldMarketing/theme";
 
 const scenes = [
@@ -32,6 +35,16 @@ export const RemotionRoot: React.FC = () => {
         width={WIDTH}
         height={HEIGHT}
       />
+      <Folder name="Reels">
+        <Composition
+          id="ReelDemo"
+          component={DemoReel}
+          durationInFrames={planDuration(demoPlan)}
+          fps={demoPlan.fps}
+          width={demoPlan.width}
+          height={demoPlan.height}
+        />
+      </Folder>
       <Folder name="FieldMarketing-Scenes">
         {scenes.map((s) => (
           <Composition
