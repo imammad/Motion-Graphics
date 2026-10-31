@@ -1,4 +1,5 @@
 import { Composition, Folder } from "remotion";
+import { ANFAAL_FRAMES, AnfaalReel } from "./Anfaal/AnfaalReel";
 import { AnswersScene } from "./FieldMarketing/AnswersScene";
 import { AskScene } from "./FieldMarketing/AskScene";
 import { BoothScene } from "./FieldMarketing/BoothScene";
@@ -40,6 +41,14 @@ const scenesV2 = [
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      <Composition
+        id="AnfaalFOMC"
+        component={AnfaalReel}
+        durationInFrames={ANFAAL_FRAMES}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
       <Composition
         id="FieldMarketingV2"
         component={FieldMarketingV2}
