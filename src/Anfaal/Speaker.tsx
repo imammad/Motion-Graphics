@@ -2,17 +2,41 @@ import React from "react";
 import { AbsoluteFill, OffthreadVideo, Sequence, interpolate, staticFile, useCurrentFrame } from "remotion";
 import { C, F, FPS, H, W } from "./brand";
 import { easeInOut, easeOut, prog, sec } from "./kit";
-import { BEHIND, CAM, CUTS, SCENES } from "./timeline";
+import { BEHIND, CAM, CUTS, SCENES, faceAt } from "./timeline";
 
-const FACE_X = 540;
-const FACE_Y = 990; // face centre in source footage
+/**
+ * Framing, driven by the tracked face of the current clip:
+ * - full frame: zoom around the face, nudge it toward centre x when the zoom allows.
+ *   Captions sit ABOVE the head on the roof (never on the face).
+ * - split: speaker in the bottom 960 px, face centre at local y 540, so the caption
+ *   at the top of that box only covers hair.
+ */
+export const framing = (t: number, sp: number) => {
+  const face = faceAt(t);
+  // smooth cuts: every jump cut lands slightly zoomed and settles in over 0.45 s
+  const settle = 1 + 0.04 * (1 - cutSettle(t));
+  const cam = camScale(t) * settle;
+  const s = cam * (1 - sp) + 1.0 * sp * settle;
+  // horizontal centring limited by what the zoom can cover
+  const tx = Math.min(face.cx * s, Math.max(W - (W - face.cx) * s, 540));
+  const dx = (tx - face.cx) * (1 - sp);
+  const ty = sp * (540 - face.cy);
+  return { face, s, dx, ty };
+};
 
-/** Chin y on screen (full-frame) for a camera scale; captions stay below it. */
-// Full-frame framing: face raised to y=860 with a 1.14 base scale (covers the frame),
-// camera keys add up to ~12% on top. Chin sits ~460 px below the face centre in source.
-const FULL_FACE_Y = 860;
-export const fullScale = (cam: number) => 1.14 + (cam - 1) * 0.8;
-export const chinY = (cam: number) => FULL_FACE_Y + 460 * fullScale(cam);
+/** 0 right at a cut → 1 once settled (0.45 s, ease-out). */
+export const cutSettle = (t: number) => {
+  const c = CUTS.filter((x) => x <= t).pop();
+  if (c === undefined) return 1;
+  return interpolate(t - c, [0, 0.45], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: easeOut });
+};
+
+/** Top y of the full-frame caption line: 140 px above the hair, inside the safe area. */
+export const captionTopFull = (t: number) => {
+  const { face, s } = framing(t, 0);
+  const hairTop = face.cy - 0.85 * face.h * s;
+  return Math.max(270, Math.min(560, hairTop - 140));
+};
 
 /** Camera scale at time t (seconds): eased between keys, hard jumps on `hold` keys. */
 export const camScale = (t: number) => {
@@ -55,17 +79,19 @@ const toneFill: Record<string, string> = {
   green: "linear-gradient(180deg, #DFFFEC 0%, #4BE394 50%, #149A54 100%)",
 };
 
-const BehindWord: React.FC<{ word: string; tone: string; dur: number }> = ({ word, tone, dur }) => {
+const BehindWord: React.FC<{ word: string; tone: string; dur: number; at: number }> = ({ word, tone, dur, at }) => {
   const f = useCurrentFrame();
   const t = prog(f, 0, 16);
   const o = prog(f, dur - 8, 8);
   const size = Math.min(400, 1720 / Math.max(3, word.length));
+  const face = faceAt(at);
+  const centre = face.cy - 0.78 * face.h;
   return (
     <AbsoluteFill style={{ alignItems: "center" }}>
       <div
         style={{
           position: "absolute",
-          top: 660 - size * 0.62,
+          top: centre - size * 0.62,
           fontFamily: F.display,
           fontSize: size,
           lineHeight: 1.1,
@@ -90,13 +116,9 @@ export const Speaker: React.FC = () => {
   const frame = useCurrentFrame();
   const t = frame / FPS;
   const sp = splitAmount(frame);
-  // in split, frame wider so the caption above the speaker sits on hair/roof, never the face
-  const s = fullScale(camScale(t)) * (1 - sp) + 1.0 * sp;
+  const { face, s, dx, ty } = framing(t, sp);
   const top = sp * 960;
-  // keep the face centred in whatever box the speaker occupies
   const boxH = H - top;
-  const faceTarget = interpolate(sp, [0, 1], [FULL_FACE_Y, boxH * 0.5]);
-  const ty = faceTarget - FACE_Y;
 
   const video = (src: string, transparent = false) => (
     <OffthreadVideo src={staticFile(src)} transparent={transparent} muted style={{ width: W, height: H }} />
@@ -112,8 +134,9 @@ export const Speaker: React.FC = () => {
             top: 0,
             width: W,
             height: H,
-            transformOrigin: `${FACE_X}px ${FACE_Y}px`,
-            transform: `translateY(${ty}px) scale(${s})`,
+            transformOrigin: `${face.cx}px ${face.cy}px`,
+            transform: `translate(${dx}px, ${ty}px) scale(${s})`,
+            filter: `blur(${(1 - Math.min(1, cutSettle(t) * 3)) * 5}px)`,
           }}
         >
           {video("anfaal/cut.mp4")}
@@ -123,7 +146,7 @@ export const Speaker: React.FC = () => {
             return (
               <Sequence key={b.word + b.from} from={from} durationInFrames={dur} layout="none">
                 <AbsoluteFill>
-                  <BehindWord word={b.word} tone={b.tone} dur={dur} />
+                  <BehindWord word={b.word} tone={b.tone} dur={dur} at={b.from} />
                 </AbsoluteFill>
                 <AbsoluteFill>
                   <OffthreadVideo

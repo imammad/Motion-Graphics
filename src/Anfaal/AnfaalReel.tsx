@@ -4,10 +4,10 @@ import "./brand";
 import { Captions } from "./Captions";
 import { LiquidityScene, RumoursScene } from "./FullScreens";
 import { sec } from "./kit";
-import { HookPills, LessonPills } from "./Overlays";
+import { FedChairCard, HookPills, LessonPills } from "./Overlays";
 import { FullScreen, Speaker, SplitPanel } from "./Speaker";
 import { CtaSplit, OddsSplit, RangeSplit, RateSplit, SupportSplit } from "./Splits";
-import { BEHIND, DURATION_S, SCENES } from "./timeline";
+import { BEHIND, DURATION_S, FED_CARD, SCENES } from "./timeline";
 
 // Anfaal · "FOMC gold facts" reel, 60 s, 1080×1920 @30.
 // Base: graded + denoised cut (public/anfaal/cut.mp4). Layers: speaker (camera,
@@ -46,6 +46,11 @@ export const AnfaalReel: React.FC = () => {
   return (
     <AbsoluteFill style={{ backgroundColor: "#07100C" }}>
       <Audio src={staticFile("anfaal/cut.mp4")} />
+      {/* original music bed, kept ~15 dB under the voice, fades in/out */}
+      <Audio
+        src={staticFile("anfaal/music.wav")}
+        volume={(f) => 0.2 * Math.min(1, f / 8) * Math.min(1, (ANFAAL_FRAMES - f) / 45)}
+      />
       <Speaker />
 
       <Split k="rateSplit">
@@ -74,6 +79,9 @@ export const AnfaalReel: React.FC = () => {
       <Sequence from={0} durationInFrames={sec(3.55)}>
         <HookPills />
       </Sequence>
+      <Sequence from={sec(FED_CARD.from)} durationInFrames={sec(FED_CARD.to) - sec(FED_CARD.from)}>
+        <FedChairCard />
+      </Sequence>
       <Sequence from={sec(45.6)} durationInFrames={sec(51.73) - sec(45.6)}>
         <LessonPills />
       </Sequence>
@@ -82,22 +90,23 @@ export const AnfaalReel: React.FC = () => {
 
       {/* sound design: soft, low in the mix */}
       {Object.values(SCENES).map((s) => (
-        <Sfx key={s.from} at={s.from - 0.15} src="whoosh" vol={0.35} />
+        <Sfx key={s.from} at={s.from - 0.25} src="whoosh" vol={0.16} />
       ))}
       {BEHIND.map((b) => (
-        <Sfx key={b.word} at={b.from} src="whoosh" vol={0.22} />
+        <Sfx key={b.word} at={b.from - 0.2} src="whoosh" vol={0.1} />
       ))}
-      <Sfx at={0.9} src="pop" vol={0.5} />
-      <Sfx at={1.95} src="pop" vol={0.5} />
-      <Sfx at={6.35} src="thud" vol={0.7} />
-      <Sfx at={14.55} src="pop" vol={0.5} />
-      <Sfx at={19.0} src="pop" vol={0.45} />
-      <Sfx at={36.4} src="pop" vol={0.45} />
-      <Sfx at={42.7} src="thud" vol={0.7} />
-      <Sfx at={45.6} src="pop" vol={0.45} />
-      <Sfx at={47.53} src="pop" vol={0.45} />
-      <Sfx at={50.85} src="thud" vol={0.6} />
-      <Sfx at={58.3} src="pop" vol={0.5} />
+      <Sfx at={0.9} src="pop" vol={0.3} />
+      <Sfx at={8.35} src="whoosh" vol={0.12} />
+      <Sfx at={1.95} src="pop" vol={0.3} />
+      <Sfx at={6.35} src="thud" vol={0.35} />
+      <Sfx at={14.55} src="pop" vol={0.3} />
+      <Sfx at={19.0} src="pop" vol={0.3} />
+      <Sfx at={36.4} src="pop" vol={0.3} />
+      <Sfx at={42.7} src="thud" vol={0.35} />
+      <Sfx at={45.6} src="pop" vol={0.3} />
+      <Sfx at={47.53} src="pop" vol={0.3} />
+      <Sfx at={50.85} src="thud" vol={0.35} />
+      <Sfx at={58.3} src="pop" vol={0.3} />
     </AbsoluteFill>
   );
 };

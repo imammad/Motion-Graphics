@@ -71,6 +71,9 @@ export const CAPTIONS: Cap[] = [
 ];
 
 // Scene windows (seconds). split = infographic top half, speaker bottom half.
+// Fed chair card window (replaces the caption above the head)
+export const FED_CARD = { from: 8.4, to: 10.0 };
+
 export const SCENES = {
   rumours: { from: 3.55, to: 7.54 }, // full screen
   rateSplit: { from: 10.0, to: 15.52 }, // split
@@ -85,21 +88,20 @@ export const SCENES = {
 export type Behind = { from: number; to: number; word: string; tone: "white" | "gold" | "red" | "green" };
 export const BEHIND: Behind[] = [
   { from: 0.0, to: 3.55, word: "GOLD", tone: "gold" },
-  { from: 8.45, to: 10.0, word: "FED", tone: "white" },
-  { from: 20.77, to: 22.55, word: "RATES", tone: "white" },
-  { from: 33.18, to: 35.5, word: "SUPPORT", tone: "white" },
-  { from: 51.0, to: 51.73, word: "NO PROFIT", tone: "red" },
+  { from: 20.77, to: 22.2, word: "RATES", tone: "white" },
+  { from: 34.25, to: 35.5, word: "SUPPORT", tone: "white" },
+  { from: 50.85, to: 51.73, word: "NO PROFIT", tone: "red" },
 ];
 
 // Speaker camera: scale keys (seconds). Cuts change scale (hides the jump cut),
 // in between it eases slowly; emphasis zooms are 0.5 s in-out moves.
 export type CamKey = { t: number; s: number; y?: number; hold?: boolean };
 export const CAM: CamKey[] = [
-  { t: 0, s: 1.14, hold: true },
+  { t: 0, s: 1.1, hold: true },
   { t: 0.7, s: 1.0 }, // hook pull-out
   { t: 1.9, s: 1.0, hold: true },
-  { t: 2.4, s: 1.07 }, // all-time high push
-  { t: 3.55, s: 1.1 },
+  { t: 2.4, s: 1.05 }, // all-time high push
+  { t: 3.55, s: 1.06 },
   { t: 7.54, s: 1.0, hold: true },
   { t: 8.4, s: 1.0, hold: true },
   { t: 8.9, s: 1.1 },
@@ -122,3 +124,19 @@ export const CAM: CamKey[] = [
   { t: 51.73, s: 1.06, hold: true },
   { t: 60.3, s: 1.12 },
 ];
+
+// Tracked face per clip (median of scripts/anfaal/face_track.py, source px):
+// centre x/y and face-box height (box bottom ≈ chin, hair top ≈ cy − 0.85·h).
+export type FaceSeg = { from: number; cx: number; cy: number; h: number };
+export const FACE_SEG: FaceSeg[] = [
+  { from: 0, cx: 526, cy: 1055, h: 694 },
+  { from: 7.54, cx: 481, cy: 1182, h: 700 },
+  { from: 15.52, cx: 491, cy: 1192, h: 706 },
+  { from: 20.75, cx: 442, cy: 1192, h: 696 },
+  { from: 27.1, cx: 430, cy: 1193, h: 683 },
+  { from: 33.16, cx: 473, cy: 1183, h: 736 },
+  { from: 42.66, cx: 581, cy: 1162, h: 676 },
+  { from: 44.14, cx: 459, cy: 1170, h: 704 },
+  { from: 51.73, cx: 572, cy: 1163, h: 706 },
+];
+export const faceAt = (t: number) => [...FACE_SEG].reverse().find((f) => f.from <= t) ?? FACE_SEG[0];
