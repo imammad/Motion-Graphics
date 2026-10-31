@@ -65,7 +65,7 @@ const BehindWord: React.FC<{ word: string; tone: string; dur: number }> = ({ wor
       <div
         style={{
           position: "absolute",
-          top: 600 - size * 0.62,
+          top: 660 - size * 0.62,
           fontFamily: F.display,
           fontSize: size,
           lineHeight: 1.1,
