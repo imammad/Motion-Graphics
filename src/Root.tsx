@@ -1,4 +1,5 @@
-import { Composition, Folder } from "remotion";
+import { Composition, Folder, Still } from "remotion";
+import { AnfaalCover } from "./Anfaal/Cover";
 import { ANFAAL_FRAMES, AnfaalReel } from "./Anfaal/AnfaalReel";
 import { AnswersScene } from "./FieldMarketing/AnswersScene";
 import { AskScene } from "./FieldMarketing/AskScene";
@@ -49,6 +50,7 @@ export const RemotionRoot: React.FC = () => {
         width={1080}
         height={1920}
       />
+      <Still id="AnfaalCover" component={AnfaalCover} width={1080} height={1920} />
       <Composition
         id="FieldMarketingV2"
         component={FieldMarketingV2}
