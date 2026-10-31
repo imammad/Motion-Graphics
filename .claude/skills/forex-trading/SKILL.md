@@ -5,8 +5,9 @@ description: "Forex Trading style: edit a raw talking-head forex / gold / crypto
 
 # Forex Trading style
 
-A finished example lives in this repo: `src/Anfaal/` (composition `AnfaalFOMC`, cover still `AnfaalCover`).
-**Copy that folder as the template for every new reel**; change `timeline.ts` (cuts, captions, scenes, keywords,
+The finished example's code is bundled at `assets/template/` (and may also exist in the repo as `src/Anfaal/`,
+composition `AnfaalFOMC`, cover still `AnfaalCover`). **Copy it as the template for every new reel**
+(setup in `assets/template/README.md`); change `timeline.ts` (cuts, captions, scenes, keywords,
 camera, face table), the scene contents and the assets. Don't rebuild the kit.
 
 ![frames](assets/example_frames.jpg) ![cover](assets/example_cover.jpg)
