@@ -43,12 +43,14 @@ export const Captions: React.FC = () => {
 
   const sp = splitAmount(frame);
   // full: above the head on the roof. split: just under the seam, over hair only.
-  const y = captionYFull(t) * (1 - sp) + 1010 * sp;
+  const y = captionYFull(t) * (1 - sp) + 978 * sp;
   const light = false;
   const hide = Math.max(
     ...FULL.map((s) => prog(frame, sec(s.from), 6) * (1 - prog(frame, sec(s.to) - 6, 6))),
   );
-  const exit = Math.max(prog(frame, end - 4, 4, easeIn), hide);
+  // while the layout moves between full and split, the caption steps out (it would cross the face)
+  const moving = Math.min(1, Math.max(0, Math.min(sp, 1 - sp) * 6));
+  const exit = Math.max(prog(frame, end - 4, 4, easeIn), hide, moving);
 
   return (
     <AbsoluteFill style={{ pointerEvents: "none" }}>
@@ -61,7 +63,7 @@ export const Captions: React.FC = () => {
           top: y - 50,
           height: 190,
           borderRadius: 80,
-          background: "radial-gradient(50% 50% at 50% 50%, rgba(5,10,8,.78) 0%, rgba(5,10,8,.35) 60%, rgba(5,10,8,0) 100%)",
+          background: "radial-gradient(50% 50% at 50% 50%, rgba(5,10,8,.42) 0%, rgba(5,10,8,.16) 60%, rgba(5,10,8,0) 100%)",
           opacity: sp * (1 - exit),
         }}
       />
@@ -74,6 +76,7 @@ export const Captions: React.FC = () => {
           flexWrap: "nowrap",
           display: "flex",
           justifyContent: "center",
+          alignItems: "baseline",
           columnGap: 16,
           rowGap: 4,
           opacity: 1 - exit,
@@ -96,8 +99,8 @@ export const Captions: React.FC = () => {
                 textShadow: light
                   ? "none"
                   : key
-                    ? `0 2px 0 rgba(0,0,0,.45), 0 0 26px ${kindGlow[tk.kind]}, 0 4px 18px rgba(0,0,0,.85)`
-                    : "0 2px 0 rgba(0,0,0,.45), 0 4px 18px rgba(0,0,0,.85), 0 0 34px rgba(0,0,0,.55)",
+                    ? `0 0 20px ${kindGlow[tk.kind]}, 0 2px 6px rgba(0,0,0,.42)`
+                    : "0 2px 6px rgba(0,0,0,.42), 0 1px 2px rgba(0,0,0,.3)",
                 opacity: p,
                 transform: `translateY(${(1 - p) * 16}px) scale(${key ? 0.85 + 0.15 * p : 1})`,
                 filter: `blur(${(1 - p) * 6}px)`,

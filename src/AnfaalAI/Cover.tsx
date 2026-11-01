@@ -8,7 +8,7 @@ import { MicroLabel, rnd } from "./kit";
 // Layers: graded frame → brand shading → faint red candles → CRASH → head cut-out
 // (CRASH sits behind the hair) → chest gradient → headline.
 
-const FACE = { x: 551, y: 905 }; // face centre in the 38.25 s frame (smile)
+const FACE = { x: 559, y: 915 }; // face centre in the 25.6 s frame (warm smile)
 const S = 1.28;
 const FACE_TO = 820;
 
@@ -73,7 +73,7 @@ export const AnfaalAICover: React.FC = () => {
         <div
           style={{
             position: "absolute",
-            top: 232,
+            top: 178,
             fontFamily: F.display,
             fontSize: 345,
             lineHeight: 1.05,
@@ -82,7 +82,7 @@ export const AnfaalAICover: React.FC = () => {
             WebkitBackgroundClip: "text",
             backgroundClip: "text",
             color: "transparent",
-            filter: "drop-shadow(0 24px 50px rgba(0,0,0,.55))",
+            filter: "drop-shadow(0 10px 26px rgba(0,0,0,.3))",
           }}
         >
           CRASH
@@ -92,7 +92,7 @@ export const AnfaalAICover: React.FC = () => {
       <Framed src="anfaal2/cover_head.png" />
 
       <AbsoluteFill
-        style={{ background: "linear-gradient(180deg, rgba(7,16,12,0) 58%, rgba(7,16,12,.84) 66%, #07100C 80%)" }}
+        style={{ background: "linear-gradient(180deg, rgba(7,16,12,0) 52%, rgba(7,16,12,.35) 60%, rgba(7,16,12,.7) 68%, rgba(7,16,12,.88) 78%, rgba(7,16,12,.94) 100%)" }}
       />
 
       {/* headline on the chest */}

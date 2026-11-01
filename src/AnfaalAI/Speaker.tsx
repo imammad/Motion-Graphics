@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill, OffthreadVideo, Sequence, interpolate, staticFile, useCurrentFrame } from "remotion";
+import { AbsoluteFill, Img, OffthreadVideo, Sequence, interpolate, spring, staticFile, useCurrentFrame } from "remotion";
 import { C, F, FPS, H, W } from "./brand";
 import { easeInOut, easeOut, prog, sec } from "./kit";
 import { BEHIND, CAM, CUTS, DURATION_S, SPLITS, faceAt } from "./timeline";
@@ -42,7 +42,7 @@ export const captionTopFull = (t: number) => {
 export const captionYFull = (t: number) => {
   const { face, s } = framing(t, 0);
   const chin = face.cy + 0.58 * face.h * s;
-  return Math.max(1200, Math.min(1430, chin + 60));
+  return Math.max(1165, Math.min(1400, chin + 36));
 };
 
 /** Camera scale at time t (seconds): eased between keys, hard jumps on `hold` keys. */
@@ -71,8 +71,8 @@ export const splitAmount = (frame: number) => {
   for (const s of SPLITS) {
     const a = sec(s.from);
     const b = sec(s.to);
-    const inT = s.from === 0 ? 1 : prog(frame, a, 16, easeInOut); // hook opens already split
-    const outT = s.to >= DURATION_S - 0.1 ? 0 : prog(frame, b - 14, 14, easeInOut);
+    const inT = s.from === 0 ? 1 : prog(frame, a, 20, easeInOut); // hook opens already split
+    const outT = s.to >= DURATION_S - 0.1 ? 0 : prog(frame, b - 18, 18, easeInOut);
     v = Math.max(v, inT * (1 - outT));
   }
   return v;
@@ -91,7 +91,7 @@ const BehindWord: React.FC<{ word: string; tone: string; dur: number; at: number
   const o = prog(f, dur - 8, 8);
   const size = Math.min(400, 1720 / Math.max(3, word.length));
   const face = faceAt(at);
-  const centre = face.cy - 0.78 * face.h;
+  const centre = face.cy - 0.78 * face.h - 95;
   return (
     <AbsoluteFill style={{ alignItems: "center" }}>
       <div
@@ -109,13 +109,19 @@ const BehindWord: React.FC<{ word: string; tone: string; dur: number; at: number
           color: "transparent",
           opacity: t * (1 - o),
           transform: `translateY(${(1 - t) * 60}px) scale(${0.92 + 0.08 * t + 0.03 * (f / dur)})`,
-          filter: `blur(${(1 - t) * 14 + o * 10}px) drop-shadow(0 0 2px rgba(0,0,0,.5)) drop-shadow(0 18px 40px rgba(0,0,0,.55))`,
+          filter: `blur(${(1 - t) * 14 + o * 10}px) drop-shadow(0 8px 22px rgba(0,0,0,.28))`,
         }}
       >
         {word}
       </div>
     </AbsoluteFill>
   );
+};
+
+const CutDissolve: React.FC<{ src: string }> = ({ src }) => {
+  const f = useCurrentFrame();
+  const o = 1 - prog(f, 0, 7, easeInOut);
+  return <Img src={staticFile(src)} style={{ position: "absolute", left: 0, top: 0, width: W, height: H, opacity: o }} />;
 };
 
 export const Speaker: React.FC = () => {
@@ -146,8 +152,14 @@ export const Speaker: React.FC = () => {
           }}
         >
           {video("anfaal2/cut.mp4")}
+          {/* smooth jump cuts: the outgoing shot's last frame dissolves over the incoming one */}
+          {CUTS.map((c) => (
+            <Sequence key={c} from={sec(c)} durationInFrames={7} layout="none">
+              <CutDissolve src={`anfaal2/cut_${c.toFixed(2)}.png`} />
+            </Sequence>
+          ))}
           {/* tame the bright marble above the head so words/pills read */}
-          <AbsoluteFill style={{ background: "linear-gradient(180deg, rgba(5,12,8,.55) 0%, rgba(5,12,8,.35) 30%, rgba(5,12,8,0) 52%)" }} />
+          <AbsoluteFill style={{ background: "linear-gradient(180deg, rgba(5,12,8,.42) 0%, rgba(5,12,8,.22) 30%, rgba(5,12,8,0) 50%)" }} />
           {BEHIND.map((b) => {
             const from = sec(b.from);
             const dur = sec(b.to) - from;
@@ -169,11 +181,11 @@ export const Speaker: React.FC = () => {
             );
           })}
         </div>
-        {/* soft grade finish: vignette + bottom shade for caption legibility */}
+        {/* soft grade finish: light vignette only */}
         <AbsoluteFill
           style={{
             background:
-              "radial-gradient(120% 75% at 50% 40%, transparent 55%, rgba(0,0,0,.35) 100%), linear-gradient(180deg, rgba(0,0,0,0) 55%, rgba(0,0,0,.28) 100%)",
+              "radial-gradient(130% 85% at 50% 42%, transparent 62%, rgba(0,0,0,.22) 100%)",
           }}
         />
         {/* split seam: thin green line on the top edge of the speaker box */}
@@ -198,13 +210,17 @@ export const Speaker: React.FC = () => {
 export const SplitPanel: React.FC<{ from: number; to: number; children: React.ReactNode }> = ({ from, to, children }) => {
   const frame = useCurrentFrame(); // local to the Sequence
   const dur = sec(to) - sec(from);
-  const inT = from === 0 ? 1 : prog(frame, 0, 16, easeInOut);
+  const inT = from === 0 ? 1 : prog(frame, 0, 20, easeInOut);
   const last = to >= DURATION_S - 0.1;
-  const outT = last ? 0 : prog(frame, dur - 14, 14, easeInOut);
+  const outT = last ? 0 : prog(frame, dur - 18, 18, easeInOut);
   const y = -(1 - inT) * 960 - outT * 960;
+  // content lags the panel a touch and settles with a soft spring (follow-through)
+  const settle = from === 0 ? 1 : spring({ frame, fps: 30, config: { damping: 16, mass: 0.9, stiffness: 110 } });
   return (
     <div style={{ position: "absolute", left: 0, top: 0, width: W, height: 960, overflow: "hidden", transform: `translateY(${y}px)` }}>
-      {children}
+      <div style={{ position: "absolute", inset: 0, transform: `translateY(${(1 - settle) * -40}px) scale(${1.03 - 0.03 * settle})`, transformOrigin: "50% 0%" }}>
+        {children}
+      </div>
     </div>
   );
 };
@@ -212,18 +228,19 @@ export const SplitPanel: React.FC<{ from: number; to: number; children: React.Re
 /** Full-screen container: circle reveal from the face, quick scale/blur exit. */
 export const FullScreen: React.FC<{ dur: number; children: React.ReactNode }> = ({ dur, children }) => {
   const frame = useCurrentFrame();
-  const r = prog(frame, 0, 15, easeOut) * 130;
-  const out = prog(frame, dur - 9, 9, easeInOut);
+  const rv = spring({ frame, fps: 30, config: { damping: 20, mass: 1, stiffness: 90 } });
+  const r = Math.min(1, rv) * 130;
+  const out = prog(frame, dur - 12, 12, easeInOut);
   return (
     <AbsoluteFill
       style={{
         clipPath: `circle(${r}% at 50% 36%)`,
         opacity: 1 - out,
-        transform: `scale(${1 + out * 0.06})`,
+        transform: `scale(${1 + out * 0.05})`,
         filter: `blur(${out * 10}px)`,
       }}
     >
-      {children}
+      <AbsoluteFill style={{ transform: `scale(${1.08 - 0.08 * rv})` }}>{children}</AbsoluteFill>
     </AbsoluteFill>
   );
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill, Easing, interpolate, useCurrentFrame } from "remotion";
+import { AbsoluteFill, Easing, interpolate, spring, useCurrentFrame } from "remotion";
 import { C, F, FPS } from "./brand";
 
 export const easeOut = Easing.bezier(0.16, 1, 0.3, 1);
@@ -18,23 +18,37 @@ export const prog = (frame: number, start: number, dur: number, ease = easeOut) 
 
 export const mix = (t: number, a: number, b: number) => a + (b - a) * t;
 
-/** Standard entrance: rise + fade + de-blur + slight scale. Returns style. */
+/**
+ * Physical spring 0→1 with a small overshoot (~5%) and settle: follow-through
+ * instead of a dead stop. `dur` scales the stiffness so longer = softer.
+ */
+export const springIn = (frame: number, at: number, dur = 12) =>
+  spring({
+    frame: frame - at,
+    fps: 30,
+    config: { damping: 14, mass: 0.8, stiffness: 2400 / Math.max(6, dur) / Math.max(6, dur) + 90 },
+  });
+
+/** Standard entrance: rise + fade + de-blur + scale, on a spring (overshoot then settle). */
 export const enter = (frame: number, at: number, dur = 12, rise = 30): React.CSSProperties => {
-  const t = prog(frame, at, dur);
+  const s = springIn(frame, at, dur);
+  const o = prog(frame, at, Math.max(4, dur * 0.6));
   return {
-    opacity: t,
-    transform: `translateY(${(1 - t) * rise}px) scale(${mix(t, 0.9, 1)})`,
-    filter: `blur(${(1 - t) * 8}px)`,
+    opacity: o,
+    transform: `translateY(${(1 - s) * rise}px) scale(${mix(s, 0.88, 1)})`,
+    filter: `blur(${(1 - o) * 8}px)`,
   };
 };
 
 /** Entrance + quicker exit. */
 export const inOut = (frame: number, at: number, end: number, dur = 12, rise = 30): React.CSSProperties => {
-  const t = prog(frame, at, dur);
-  const o = prog(frame, end - 7, 7, easeIn);
+  const s = springIn(frame, at, dur);
+  const t = prog(frame, at, Math.max(4, dur * 0.6));
+  // exit: tiny anticipation lift, then ease-in away
+  const o = prog(frame, end - 8, 8, easeIn);
   return {
     opacity: t * (1 - o),
-    transform: `translateY(${(1 - t) * rise - o * 10}px) scale(${mix(t, 0.9, 1) * mix(o, 1, 0.96)})`,
+    transform: `translateY(${(1 - s) * rise - o * 16}px) scale(${mix(s, 0.88, 1) * mix(o, 1, 0.94)})`,
     filter: `blur(${(1 - t) * 8 + o * 8}px)`,
   };
 };
