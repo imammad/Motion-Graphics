@@ -9,8 +9,8 @@ import { MicroLabel, rnd } from "./kit";
 // Text stays inside the 3:4 grid crop (y 240–1680) and off the face.
 
 const FACE = { x: 470, y: 1256 }; // face centre in the 43.25 s frame
-const S = 0.82;
-const FACE_TO = 820;
+const S = 0.6;
+const FACE_TO = 860;
 const SUPPORT_Y = 1035;
 
 // stylised price path falling into 3800 (behind the person)
@@ -58,7 +58,7 @@ export const AnfaalNovCover: React.FC = () => (
       }}
     />
     {/* gold glow behind the head */}
-    <AbsoluteFill style={{ background: "radial-gradient(34% 22% at 50% 40%, rgba(217,182,110,.38) 0%, rgba(217,182,110,0) 100%)" }} />
+    <AbsoluteFill style={{ background: "radial-gradient(30% 18% at 50% 44%, rgba(217,182,110,.4) 0%, rgba(217,182,110,0) 100%)" }} />
 
     {/* falling chart onto 3800 */}
     <svg width={1080} height={1920} style={{ position: "absolute", inset: 0 }}>
@@ -79,7 +79,7 @@ export const AnfaalNovCover: React.FC = () => (
       <div
         style={{
           position: "absolute",
-          top: 150,
+          top: 255,
           fontFamily: F.display,
           fontSize: 400,
           lineHeight: 1.05,
@@ -108,7 +108,7 @@ export const AnfaalNovCover: React.FC = () => (
           width: 1080,
           height: 1920,
           filter:
-            "brightness(1.03) contrast(1.07) saturate(1.04) drop-shadow(0 0 22px rgba(217,182,110,.35)) drop-shadow(0 30px 50px rgba(0,0,0,.55))",
+            "brightness(1.02) contrast(1.03) drop-shadow(0 0 22px rgba(217,182,110,.35)) drop-shadow(0 30px 50px rgba(0,0,0,.55))",
         }}
       />
     </AbsoluteFill>
@@ -118,10 +118,10 @@ export const AnfaalNovCover: React.FC = () => (
       style={{
         position: "absolute",
         left: 0,
-        top: 900,
+        top: 930,
         width: 1080,
         height: 420,
-        background: `linear-gradient(90deg, ${C.ink} 0%, rgba(7,16,12,.85) 22%, rgba(7,16,12,.4) 34%, rgba(7,16,12,0) 46%)`,
+        background: `linear-gradient(90deg, ${C.ink} 0%, rgba(7,16,12,.9) 26%, rgba(7,16,12,.55) 38%, rgba(7,16,12,0) 50%)`,
         WebkitMaskImage: "linear-gradient(180deg, transparent 0%, black 35%)",
         maskImage: "linear-gradient(180deg, transparent 0%, black 35%)",
       }}
