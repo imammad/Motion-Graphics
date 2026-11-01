@@ -21,7 +21,6 @@ const parse = (text: string): Tok[] => {
 };
 
 const kindColor = { plain: C.white, green: C.green, red: C.red, gold: C.gold };
-const kindGlow = { plain: "transparent", green: C.greenGlow, red: C.redGlow, gold: "rgba(217,182,110,.45)" };
 
 // Full screens carry their own headline, so captions step aside there.
 // Also steps aside for the hook/lesson pills and while a behind-head keyword is up.
@@ -54,19 +53,6 @@ export const Captions: React.FC = () => {
 
   return (
     <AbsoluteFill style={{ pointerEvents: "none" }}>
-      {/* soft dark bed behind the caption over the busy wall in split view */}
-      <div
-        style={{
-          position: "absolute",
-          left: 60,
-          right: 60,
-          top: y - 50,
-          height: 190,
-          borderRadius: 80,
-          background: "radial-gradient(50% 50% at 50% 50%, rgba(5,10,8,.42) 0%, rgba(5,10,8,.16) 60%, rgba(5,10,8,0) 100%)",
-          opacity: sp * (1 - exit),
-        }}
-      />
       <div
         style={{
           position: "absolute",
@@ -96,11 +82,7 @@ export const Captions: React.FC = () => {
                 letterSpacing: -1,
                 lineHeight: 1.15,
                 color: light && !key ? C.paperInk : kindColor[tk.kind],
-                textShadow: light
-                  ? "none"
-                  : key
-                    ? `0 0 20px ${kindGlow[tk.kind]}, 0 2px 6px rgba(0,0,0,.42)`
-                    : "0 2px 6px rgba(0,0,0,.42), 0 1px 2px rgba(0,0,0,.3)",
+                textShadow: "0 3px 8px rgba(0,0,0,.32)",
                 opacity: p,
                 transform: `translateY(${(1 - p) * 16}px) scale(${key ? 0.85 + 0.15 * p : 1})`,
                 filter: `blur(${(1 - p) * 6}px)`,
