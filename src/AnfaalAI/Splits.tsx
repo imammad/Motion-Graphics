@@ -107,7 +107,7 @@ export const RateSplit: React.FC = () => {
           {kT > 0.98 ? <circle cx={X1} cy={410} r={14 + Math.sin(f / 5) * 2} fill={C.green} /> : null}
         </svg>
         <div style={{ position: "absolute", left: NOWX - 60, top: base + 130, width: 120, textAlign: "center", ...enter(f, 20, 12, 10) }}>
-          <MicroLabel color={C.muted} style={{ fontSize: 20 }}>
+          <MicroLabel color={C.muted} style={{ fontSize: 24 }}>
             now
           </MicroLabel>
         </div>
@@ -441,7 +441,7 @@ export const CtaSplit: React.FC = () => {
       {/* P&L badge */}
       <div style={{ position: "absolute", left: 600, top: mix(shotsUp, 690, 520), ...enter(f, 40) }}>
         <Glass style={{ padding: "16px 26px", borderRadius: 24 }}>
-          <MicroLabel color={C.muted} style={{ fontSize: 18 }}>
+          <MicroLabel color={C.muted} style={{ fontSize: 24 }}>
             xauusd · profit
           </MicroLabel>
           <div style={{ fontFamily: F.mono, fontSize: 50, color: C.green, marginTop: 4 }}>

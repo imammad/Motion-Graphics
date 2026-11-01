@@ -195,7 +195,7 @@ export const HookSplit: React.FC = () => {
             <span style={{ fontFamily: F.display, fontSize: 84, color: C.gold, lineHeight: 1 }}>GOLD</span>
             <span style={{ fontFamily: F.display, fontSize: 84, color: C.red, lineHeight: 1 }}>↓</span>
             <div style={{ textAlign: "left" }}>
-              <MicroLabel color={C.muted} style={{ fontSize: 18 }}>
+              <MicroLabel color={C.muted} style={{ fontSize: 24 }}>
                 xauusd
               </MicroLabel>
               <div style={{ fontFamily: F.sans, fontWeight: 700, fontSize: 32, color: C.white }}>bhi crash</div>
@@ -249,7 +249,7 @@ export const CashScene: React.FC = () => {
                   filter: `grayscale(${noInvest})`,
                 }}
               >
-                <MicroLabel color="#7B8A82" style={{ fontSize: 18 }}>
+                <MicroLabel color="#7B8A82" style={{ fontSize: 24 }}>
                   invest
                 </MicroLabel>
                 <div style={{ fontFamily: F.display, fontSize: 64, color: tl.c, marginTop: 4 }}>{tl.t}</div>
@@ -404,7 +404,7 @@ export const OilSplit: React.FC = () => {
           >
             ${price}
           </div>
-          <MicroLabel color={C.muted} style={{ fontSize: 20 }}>
+          <MicroLabel color={C.muted} style={{ fontSize: 24 }}>
             per barrel
           </MicroLabel>
         </div>
@@ -437,7 +437,7 @@ export const PlanSplit: React.FC = () => {
             </svg>
             <div>
               <div style={{ fontFamily: F.sans, fontWeight: 800, fontSize: 50, color: C.white, letterSpacing: -1 }}>Trade Plan</div>
-              <MicroLabel color={C.muted} style={{ fontSize: 18 }}>
+              <MicroLabel color={C.muted} style={{ fontSize: 24 }}>
                 proper · safe · step by step
               </MicroLabel>
             </div>

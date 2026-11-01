@@ -48,7 +48,7 @@ export const MicroLabel: React.FC<{ children: React.ReactNode; color?: string; s
     style={{
       fontFamily: F.sans,
       fontWeight: 600,
-      fontSize: 22,
+      fontSize: 27,
       letterSpacing: 5,
       textTransform: "uppercase",
       color,

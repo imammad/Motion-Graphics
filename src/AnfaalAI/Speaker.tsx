@@ -109,7 +109,7 @@ const BehindWord: React.FC<{ word: string; tone: string; dur: number; at: number
           color: "transparent",
           opacity: t * (1 - o),
           transform: `translateY(${(1 - t) * 60}px) scale(${0.92 + 0.08 * t + 0.03 * (f / dur)})`,
-          filter: `blur(${(1 - t) * 14 + o * 10}px) drop-shadow(0 18px 40px rgba(0,0,0,.35))`,
+          filter: `blur(${(1 - t) * 14 + o * 10}px) drop-shadow(0 0 2px rgba(0,0,0,.5)) drop-shadow(0 18px 40px rgba(0,0,0,.55))`,
         }}
       >
         {word}
@@ -146,6 +146,8 @@ export const Speaker: React.FC = () => {
           }}
         >
           {video("anfaal2/cut.mp4")}
+          {/* tame the bright marble above the head so words/pills read */}
+          <AbsoluteFill style={{ background: "linear-gradient(180deg, rgba(5,12,8,.55) 0%, rgba(5,12,8,.35) 30%, rgba(5,12,8,0) 52%)" }} />
           {BEHIND.map((b) => {
             const from = sec(b.from);
             const dur = sec(b.to) - from;

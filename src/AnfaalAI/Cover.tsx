@@ -8,7 +8,7 @@ import { MicroLabel, rnd } from "./kit";
 // Layers: graded frame → brand shading → faint red candles → CRASH → head cut-out
 // (CRASH sits behind the hair) → chest gradient → headline.
 
-const FACE = { x: 552, y: 917 }; // face centre in the 24.0 s frame
+const FACE = { x: 551, y: 905 }; // face centre in the 38.25 s frame (smile)
 const S = 1.28;
 const FACE_TO = 820;
 

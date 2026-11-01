@@ -38,6 +38,8 @@ export const Captions: React.FC = () => {
   const start = sec(cap.t);
   const end = sec(next);
   const toks = parse(cap.text);
+  // long lines shrink to stay on ONE line (a second line would drift toward the face)
+  const fit = Math.min(1, 25 / cap.text.replace(/[*!^]/g, "").length);
 
   const sp = splitAmount(frame);
   // full: above the head on the roof. split: just under the seam, over hair only.
@@ -56,21 +58,21 @@ export const Captions: React.FC = () => {
           position: "absolute",
           left: 60,
           right: 60,
-          top: y - 40,
-          height: 160,
+          top: y - 50,
+          height: 190,
           borderRadius: 80,
-          background: "radial-gradient(50% 50% at 50% 50%, rgba(5,10,8,.55) 0%, rgba(5,10,8,0) 100%)",
+          background: "radial-gradient(50% 50% at 50% 50%, rgba(5,10,8,.78) 0%, rgba(5,10,8,.35) 60%, rgba(5,10,8,0) 100%)",
           opacity: sp * (1 - exit),
         }}
       />
       <div
         style={{
           position: "absolute",
-          left: 90,
-          right: 90,
+          left: 60,
+          right: 60,
           top: y,
+          flexWrap: "nowrap",
           display: "flex",
-          flexWrap: "wrap",
           justifyContent: "center",
           columnGap: 16,
           rowGap: 4,
@@ -87,15 +89,15 @@ export const Captions: React.FC = () => {
               style={{
                 fontFamily: F.sans,
                 fontWeight: key ? 800 : 600,
-                fontSize: key ? 66 : 58,
+                fontSize: (key ? 74 : 64) * fit,
                 letterSpacing: -1,
                 lineHeight: 1.15,
                 color: light && !key ? C.paperInk : kindColor[tk.kind],
                 textShadow: light
                   ? "none"
                   : key
-                    ? `0 0 26px ${kindGlow[tk.kind]}, 0 4px 14px rgba(0,0,0,.55)`
-                    : "0 3px 12px rgba(0,0,0,.6), 0 1px 2px rgba(0,0,0,.5)",
+                    ? `0 2px 0 rgba(0,0,0,.45), 0 0 26px ${kindGlow[tk.kind]}, 0 4px 18px rgba(0,0,0,.85)`
+                    : "0 2px 0 rgba(0,0,0,.45), 0 4px 18px rgba(0,0,0,.85), 0 0 34px rgba(0,0,0,.55)",
                 opacity: p,
                 transform: `translateY(${(1 - p) * 16}px) scale(${key ? 0.85 + 0.15 * p : 1})`,
                 filter: `blur(${(1 - p) * 6}px)`,
