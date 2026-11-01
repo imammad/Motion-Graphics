@@ -8,9 +8,9 @@ import { MicroLabel, rnd } from "./kit";
 // big gold 3800 behind the cap, bright cut-out, bold headline on the chest.
 // Text stays inside the 3:4 grid crop (y 240–1680) and off the face.
 
-const FACE = { x: 470, y: 1256 }; // face centre in the 43.25 s frame
+const FACE = { x: 540, y: 1200 }; // face centre in the 36.83 s frame (eyes open, soft smile)
 const S = 0.6;
-const FACE_TO = 860;
+const FACE_TO = 840;
 const SUPPORT_Y = 1035;
 
 // stylised price path falling into 3800 (behind the person)
