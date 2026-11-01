@@ -9,3 +9,6 @@ out
 # Anfaal reel: large generated footage (regenerate from the raw take)
 public/anfaal/cut.mp4
 public/anfaal/person.webm
+public/anfaal2/cut.mp4
+public/anfaal2/person.webm
+public/anfaal2/music.wav

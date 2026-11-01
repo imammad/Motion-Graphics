@@ -1,5 +1,7 @@
 import { Composition, Folder, Still } from "remotion";
 import { AnfaalCover } from "./Anfaal/Cover";
+import { AI_FRAMES, AnfaalAIReel } from "./AnfaalAI/AnfaalReel";
+import { AnfaalAICover } from "./AnfaalAI/Cover";
 import { ANFAAL_FRAMES, AnfaalReel } from "./Anfaal/AnfaalReel";
 import { AnswersScene } from "./FieldMarketing/AnswersScene";
 import { AskScene } from "./FieldMarketing/AskScene";
@@ -50,6 +52,8 @@ export const RemotionRoot: React.FC = () => {
         width={1080}
         height={1920}
       />
+      <Composition id="AnfaalAI" component={AnfaalAIReel} durationInFrames={AI_FRAMES} fps={30} width={1080} height={1920} />
+      <Still id="AnfaalAICover" component={AnfaalAICover} width={1080} height={1920} />
       <Still id="AnfaalCover" component={AnfaalCover} width={1080} height={1920} />
       <Composition
         id="FieldMarketingV2"
