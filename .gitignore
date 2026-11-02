@@ -5,3 +5,9 @@ dist
 
 # Ignore the output video from Git but not videos you import into src/.
 out
+
+# AE rebuild generator outputs (regenerate with the commands in generator/build.py and verify_source.py)
+ae/*/generator/keys.json
+ae/*/generator/fits.json
+ae/*/generator/source_curves.json
+__pycache__/
