@@ -7,6 +7,7 @@ import { AnfaalNovCover } from "./AnfaalNov/Cover";
 import { CtaScene, DropScene, HookScene, HookTest, TypeBoard, WeekScene } from "./GoldMoves/Scenes";
 import { GM_FRAMES, GoldMovesReel } from "./GoldMoves/Reel";
 import { GoldMovesCover } from "./GoldMoves/Cover";
+import { GM2_FRAMES, GoldMovesReel2 } from "./GoldMoves/Reel2";
 import { ANFAAL_FRAMES, AnfaalReel } from "./Anfaal/AnfaalReel";
 import { AnswersScene } from "./FieldMarketing/AnswersScene";
 import { AskScene } from "./FieldMarketing/AskScene";
@@ -60,6 +61,7 @@ export const RemotionRoot: React.FC = () => {
       <Composition id="AnfaalAI" component={AnfaalAIReel} durationInFrames={AI_FRAMES} fps={30} width={1080} height={1920} />
       <Composition id="AnfaalNov" component={AnfaalNovReel} durationInFrames={NOV_FRAMES} fps={30} width={1080} height={1920} />
       <Composition id="GoldMoves" component={GoldMovesReel} durationInFrames={GM_FRAMES} fps={30} width={1080} height={1920} />
+      <Composition id="GoldMoves2" component={GoldMovesReel2} durationInFrames={GM2_FRAMES} fps={30} width={1080} height={1920} />
       <Still id="GoldMovesCover" component={GoldMovesCover} width={1080} height={1920} />
       <Folder name="GoldMoves-Storyboard">
         <Still id="GM-TypeBoard" component={TypeBoard} width={3240} height={1920} />

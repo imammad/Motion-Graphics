@@ -6,8 +6,8 @@ import { CandleRain, Coin, K, World } from "./design";
 // glossy 3D gold), big GOLD behind the head, type style C (tracked caps + Anton), centred.
 // Text inside the 3:4 grid crop (y 240–1680) and off the face.
 
-const FACE = { x: 462, y: 996 };
-const S = 1.05;
+const FACE = { x: 492, y: 1030 }; // face option 5 (56.0 s), chosen by the client
+const S = 0.95;
 const FACE_TO = 840;
 
 export const GoldMovesCover: React.FC = () => (
