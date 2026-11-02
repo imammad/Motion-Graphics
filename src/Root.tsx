@@ -4,6 +4,9 @@ import { AI_FRAMES, AnfaalAIReel } from "./AnfaalAI/AnfaalReel";
 import { AnfaalAICover } from "./AnfaalAI/Cover";
 import { AnfaalNovReel, NOV_FRAMES } from "./AnfaalNov/AnfaalReel";
 import { AnfaalNovCover } from "./AnfaalNov/Cover";
+import { CtaScene, DropScene, HookScene, HookTest, TypeBoard, WeekScene } from "./GoldMoves/Scenes";
+import { GM_FRAMES, GoldMovesReel } from "./GoldMoves/Reel";
+import { GoldMovesCover } from "./GoldMoves/Cover";
 import { ANFAAL_FRAMES, AnfaalReel } from "./Anfaal/AnfaalReel";
 import { AnswersScene } from "./FieldMarketing/AnswersScene";
 import { AskScene } from "./FieldMarketing/AskScene";
@@ -56,6 +59,16 @@ export const RemotionRoot: React.FC = () => {
       />
       <Composition id="AnfaalAI" component={AnfaalAIReel} durationInFrames={AI_FRAMES} fps={30} width={1080} height={1920} />
       <Composition id="AnfaalNov" component={AnfaalNovReel} durationInFrames={NOV_FRAMES} fps={30} width={1080} height={1920} />
+      <Composition id="GoldMoves" component={GoldMovesReel} durationInFrames={GM_FRAMES} fps={30} width={1080} height={1920} />
+      <Still id="GoldMovesCover" component={GoldMovesCover} width={1080} height={1920} />
+      <Folder name="GoldMoves-Storyboard">
+        <Still id="GM-TypeBoard" component={TypeBoard} width={3240} height={1920} />
+        <Composition id="GM-Hook" component={HookScene} durationInFrames={180} fps={30} width={1080} height={1920} />
+        <Composition id="GM-Drop" component={DropScene} durationInFrames={180} fps={30} width={1080} height={1920} />
+        <Composition id="GM-Week" component={WeekScene} durationInFrames={180} fps={30} width={1080} height={1920} />
+        <Composition id="GM-Cta" component={CtaScene} durationInFrames={150} fps={30} width={1080} height={1920} />
+        <Composition id="GM-HookTest" component={HookTest} durationInFrames={240} fps={30} width={1080} height={1920} />
+      </Folder>
       <Still id="AnfaalNovCover" component={AnfaalNovCover} width={1080} height={1920} />
       <Still id="AnfaalAICover" component={AnfaalAICover} width={1080} height={1920} />
       <Still id="AnfaalCover" component={AnfaalCover} width={1080} height={1920} />
