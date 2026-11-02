@@ -7,3 +7,6 @@ The user wants these jobs done quickly, without setup questions the source code 
 
 Forex / gold / trading talking-head reels: use the `forex-trading` skill (`.claude/skills/forex-trading/`);
 the finished example is `src/Anfaal/` (composition `AnfaalFOMC`, cover `AnfaalCover`).
+
+Premium motion version of that style (approved later: glide motion, normal captions, chart cards, storyboard-first):
+use the `forex-premium-motion` skill; finished example `src/GoldMoves/` (composition `GoldMoves2`, cover `GoldMovesCover`).
