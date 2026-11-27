@@ -1,5 +1,6 @@
 import { Composition, Folder } from "remotion";
 import { CollectionVideo } from "./HubBoxCollection/CollectionVideo";
+import { ObsessivelyDesigned } from "./ObsessivelyDesigned/ObsessivelyDesigned";
 import * as HB from "./HubBoxCollection/theme";
 import { AnswersScene } from "./FieldMarketing/AnswersScene";
 import { AskScene } from "./FieldMarketing/AskScene";
@@ -26,6 +27,14 @@ const scenes = [
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      <Composition
+        id="ObsessivelyDesigned"
+        component={ObsessivelyDesigned}
+        durationInFrames={420}
+        fps={60}
+        width={1080}
+        height={1920}
+      />
       <Composition
         id="HubBoxCollection"
         component={CollectionVideo}
