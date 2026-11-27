@@ -1,6 +1,7 @@
 import { Composition, Folder } from "remotion";
 import { CollectionVideo } from "./HubBoxCollection/CollectionVideo";
 import { ObsessivelyDesigned } from "./ObsessivelyDesigned/ObsessivelyDesigned";
+import { PickupPointMap } from "./PickupPointMap/PickupPointMap";
 import * as HB from "./HubBoxCollection/theme";
 import { AnswersScene } from "./FieldMarketing/AnswersScene";
 import { AskScene } from "./FieldMarketing/AskScene";
@@ -27,6 +28,14 @@ const scenes = [
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      <Composition
+        id="PickupPointMap"
+        component={PickupPointMap}
+        durationInFrames={612}
+        fps={60}
+        width={1080}
+        height={1920}
+      />
       <Composition
         id="ObsessivelyDesigned"
         component={ObsessivelyDesigned}
