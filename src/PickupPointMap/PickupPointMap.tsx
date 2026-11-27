@@ -27,8 +27,11 @@ const SW = 470; // content width
 const MAP = { y: 573, h: 320 };
 const MAP_SRC = { w: 540, h: 367 };
 const PIN = { x: 378, y: 290 }; // selected pin (dpd 1) in map-source px
-const pinX = SX + (PIN.x / MAP_SRC.w) * SW;
-const pinY = MAP.y + (PIN.y / MAP_SRC.h) * MAP.h;
+const FOCUS = { x: 412, y: 296 }; // between the selected pin and the KFC next to it (map-source px)
+const pinX0 = SX + (PIN.x / MAP_SRC.w) * SW;
+const pinY0 = MAP.y + (PIN.y / MAP_SRC.h) * MAP.h;
+const focX = SX + (FOCUS.x / MAP_SRC.w) * SW;
+const focY = MAP.y + (FOCUS.y / MAP_SRC.h) * MAP.h;
 
 const DESC = "On Garrick Street, 2 min from Covent Garden station. Look for the Snappy Snaps sign.";
 
@@ -110,6 +113,8 @@ export const PickupPointMap: React.FC = () => {
   const bubble = p(f, 6.85, 7.4);
   const line = p(f, 7.0, 7.4, IO);
   const mapScale = 1 + 0.55 * push;
+  const pinX = focX + (pinX0 - focX) * mapScale; // the pin as it sits after the push-in
+  const pinY = focY + (pinY0 - focY) * mapScale;
 
   // cursor + click
   const curIn = p(f, 7.55, 7.75);
@@ -193,7 +198,7 @@ export const PickupPointMap: React.FC = () => {
               width: SW,
               height: MAP.h,
               transform: `scale(${(1.08 - 0.08 * mapQ) * mapScale})`,
-              transformOrigin: `${(PIN.x / MAP_SRC.w) * 100}% ${(PIN.y / MAP_SRC.h) * 100}%`,
+              transformOrigin: `${(FOCUS.x / MAP_SRC.w) * 100}% ${(FOCUS.y / MAP_SRC.h) * 100}%`,
             }}
           />
         </div>
@@ -311,10 +316,10 @@ export const PickupPointMap: React.FC = () => {
             src={staticFile("pickup/map.png")}
             style={{
               position: "absolute",
-              width: MAP_SRC.w * 1.35,
-              height: MAP_SRC.h * 1.35,
-              left: BUB.r - 6 - PIN.x * 1.35,
-              top: BUB.r - 6 - (PIN.y - 4) * 1.35,
+              width: MAP_SRC.w * 1.05,
+              height: MAP_SRC.h * 1.05,
+              left: BUB.r - 6 - FOCUS.x * 1.05,
+              top: BUB.r - 6 - (FOCUS.y - 22) * 1.05,
             }}
           />
         </div>
